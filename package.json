@@ -1,0 +1,21 @@
+{
+  "name": "application-vue-monorepo",
+  "version": "1.0.0",
+  "description": "采用pnpm搭建多项目仓库，既能保持项目独立部署，又能共用基础能力",
+  "main": "index.js",
+  "scripts": {
+    "script-create": "node ./packages/cli/create/script/index.js",
+    "open-book": "pnpm --filter book storybook"
+  },
+  "keywords": [],
+  "author": "wxd",
+  "license": "ISC",
+  "dependencies": {
+    "animate.css": "^4.1.1",
+    "axios": "1.8.2",
+    "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "less": "^4.2.2"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "name": "year25",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vite build",
+    "preview": "vite preview",
+    "type-check": "vue-tsc --noEmit"
+  },
+  "dependencies": {
+    "commander": "^14.0.0",
+    "common": "link:..\\common"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.4",
+    "@tailwindcss/vite": "^4.1.4",
+    "@vitejs/plugin-legacy": "^6.1.1",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.1.4",
+    "typescript": "^5.8.3",
+    "vite": "^6.1.0",
+    "vite-plugin-html": "^3.2.2",
+    "vite-plugin-mock": "^3.0.2",
+    "vue-tsc": "^2.2.10"
+  }
+}

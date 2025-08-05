@@ -1,0 +1,30 @@
+{
+  "name": "cli-progress",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc -w"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/blessed": "^0.1.25",
+    "@types/minimist": "^1.2.5",
+    "@types/node": "^22.14.0",
+    "@types/prompts": "^2.4.9",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "ansi-escapes": "^7.0.0",
+    "blessed": "^0.1.81",
+    "blessed-contrib": "^4.11.0",
+    "chalk": "^5.4.1",
+    "minimist": "^1.2.8",
+    "prompts": "^2.4.2",
+    "systeminformation": "^5.25.11"
+  }
+}
