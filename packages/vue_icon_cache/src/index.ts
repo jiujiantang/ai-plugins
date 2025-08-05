@@ -1,13 +1,15 @@
 import type { App } from 'vue';
-import { $icon } from './store';
-import type { IconItem } from './types';
+import type { ImageDB } from './types'; // 建议导出类型
+import imageDB from './store'; // 默认导出的是初始化方法等
 
-export default {
+// 插件形式注册：app.use(imageDBPlugin)
+export const imageDBPlugin = {
   install(app: App) {
-    app.config.globalProperties.$icon = $icon;
-    app.provide('$icon', $icon);
+    app.config.globalProperties.$imageDB = imageDB;
+    app.provide('$imageDB', imageDB); // inject('$imageDB')
   },
 };
 
-export { $icon };
-export type { IconItem };
+// 命名导出，清晰类型
+export { imageDB };
+export type { ImageDB };

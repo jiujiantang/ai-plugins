@@ -1,78 +1,72 @@
-import { ref } from 'vue';
-import type { CachedIcon, GroupedIcons, IconItem } from './types';
+import { openDB, IDBPDatabase } from 'idb';
 
-const icons = ref<GroupedIcons>({});
-const DEFAULT_TTL = 1000 * 60 * 60 * 24; // 默认24小时
+const DB_NAME = 'images-db';
+const STORE_NAME = 'images';
 
-const loadCache = () => {
-    const raw = localStorage.getItem('icon_cache');
-    if (raw) {
-        try {
-            icons.value = JSON.parse(raw);
-        } catch {
-            console.warn('[iconCache] localStorage 解析失败');
-        }
-    }
+// 解析版本号：支持 "v1.2.3" → 123
+const parseVersion = (v: string | number): number =>
+    typeof v === 'string'
+        ? parseInt(v.replace(/\D/g, '')) || 1
+        : v || 1;
+
+/**
+ * 获取已存在数据库的旧版本号（openDB 之前执行）
+ */
+const getExistingVersion = async (): Promise<number> => {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open(DB_NAME);
+        request.onsuccess = () => {
+            const version = request.result.version;
+            request.result.close();
+            resolve(version);
+        };
+        request.onerror = () => reject(request.error);
+        request.onupgradeneeded = e => resolve(e.oldVersion || 0); // 新建库时为 0
+    });
 };
 
-const saveCache = () => {
-    localStorage.setItem('icon_cache', JSON.stringify(icons.value));
-};
-
-const isExpired = (item: CachedIcon) => Date.now() - item.timestamp >= item.ttl;
-
-const getIcon = async (group: string, key: string, url: string, ttl = DEFAULT_TTL): Promise<string> => {
-    const groupCache = icons.value[group] || {};
-    const cacheItem = groupCache[key];
-    if (cacheItem && !isExpired(cacheItem)) return cacheItem.url;
-
-    const res = await fetch(url);
-    const blob = await res.blob();
-    const blobUrl = URL.createObjectURL(blob);
-    icons.value[group] = {
-        ...groupCache,
-        [key]: { url: blobUrl, timestamp: Date.now(), ttl },
-    };
-    saveCache();
-    return blobUrl;
-};
-
-const preloadIcons = async (group: string, iconList: IconItem[]) => {
-    const tasks = iconList.map(item => getIcon(group, item.key, item.url, item.ttl));
-    return Promise.all(tasks);
-};
-
-const autoRefresh = async () => {
-    const now = Date.now();
-    for (const group in icons.value) {
-        const groupCache = icons.value[group];
-        for (const key in groupCache) {
-            const item = groupCache[key];
-            if (isExpired(item)) {
-                try {
-                    debugger;
-                    const res = await fetch(item.url);
-                    const blob = await res.blob();
-                    const newUrl = URL.createObjectURL(blob);
-                    URL.revokeObjectURL(item.url);
-                    item.url = newUrl;
-                    item.timestamp = now;
-                } catch {
-                    console.warn(`[iconCache] 刷新失败: ${group}/${key}`);
-                }
+/**
+ * 创建并返回已打开的数据库实例（懒加载）
+ */
+const openDatabase = async (version: number): Promise<IDBPDatabase> => {
+    return openDB(DB_NAME, version, {
+        upgrade(db) {
+            if (!db.objectStoreNames.contains(STORE_NAME)) {
+                db.createObjectStore(STORE_NAME);
             }
-        }
-    }
-    saveCache();
+        },
+    });
 };
 
-// 初始化加载缓存
-loadCache();
+/**
+ * 初始化 imageDB 工具
+ * @param versionStr - 版本号（如 "v1.0.2"）
+ */
+const config = async (versionStr: string | number) => {
+    const version = parseVersion(versionStr);
+    const oldVersion = await getExistingVersion();
 
-// ✅ 导出模块 API
-export const $icon = {
-    icons,
-    getIcon,
-    preloadIcons,
-    autoRefresh,
+    // 返回封装后的工具方法
+    const getDB = () => openDatabase(version);
+
+    const setImage = async (key: string, blob: Blob) => {
+        if (version === oldVersion) return; // 版本一致不写入
+        const db = await getDB();
+        await db.put(STORE_NAME, blob, key);
+    };
+
+    const getImage = async (key: string): Promise<Blob | undefined> => {
+        const db = await getDB();
+        return db.get(STORE_NAME, key);
+    };
+
+    // 返回简洁接口（也可 export default）
+    return {
+        setImage,
+        getImage,
+        version,
+        oldVersion,
+    };
 };
+
+export default config;

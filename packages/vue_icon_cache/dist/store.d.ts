@@ -1,8 +1,11 @@
-import { GroupedIcons, IconItem } from './types';
-
-export declare const $icon: {
-    icons: import('vue').Ref<GroupedIcons, GroupedIcons>;
-    getIcon: (group: string, key: string, url: string, ttl?: number) => Promise<string>;
-    preloadIcons: (group: string, iconList: IconItem[]) => Promise<string[]>;
-    autoRefresh: () => Promise<void>;
-};
+/**
+ * 初始化 imageDB 工具
+ * @param versionStr - 版本号（如 "v1.0.2"）
+ */
+declare const config: (versionStr: string | number) => Promise<{
+    setImage: (key: string, blob: Blob) => Promise<void>;
+    getImage: (key: string) => Promise<Blob | undefined>;
+    version: number;
+    oldVersion: number;
+}>;
+export default config;

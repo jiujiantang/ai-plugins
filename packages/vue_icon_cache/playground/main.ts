@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import App from './App.vue';
-import IconCachePlugin from '@/index';
+import {imageDBPlugin} from '../src';
 
 const app = createApp(App);
-app.use(IconCachePlugin);
+app.use(imageDBPlugin);
 app.mount('#app');

@@ -1,56 +1,189 @@
-import { ref as g } from "vue";
-const a = g({}), w = 1e3 * 60 * 60 * 24, m = () => {
-  const t = localStorage.getItem("icon_cache");
-  if (t)
-    try {
-      a.value = JSON.parse(t);
-    } catch {
-      console.warn("[iconCache] localStorage 解析失败");
+const D = (e, n) => n.some((t) => e instanceof t);
+let w, b;
+function V() {
+  return w || (w = [
+    IDBDatabase,
+    IDBObjectStore,
+    IDBIndex,
+    IDBCursor,
+    IDBTransaction
+  ]);
+}
+function S() {
+  return b || (b = [
+    IDBCursor.prototype.advance,
+    IDBCursor.prototype.continue,
+    IDBCursor.prototype.continuePrimaryKey
+  ]);
+}
+const y = /* @__PURE__ */ new WeakMap(), g = /* @__PURE__ */ new WeakMap(), m = /* @__PURE__ */ new WeakMap();
+function j(e) {
+  const n = new Promise((t, r) => {
+    const i = () => {
+      e.removeEventListener("success", c), e.removeEventListener("error", o);
+    }, c = () => {
+      t(d(e.result)), i();
+    }, o = () => {
+      r(e.error), i();
+    };
+    e.addEventListener("success", c), e.addEventListener("error", o);
+  });
+  return m.set(n, e), n;
+}
+function A(e) {
+  if (y.has(e))
+    return;
+  const n = new Promise((t, r) => {
+    const i = () => {
+      e.removeEventListener("complete", c), e.removeEventListener("error", o), e.removeEventListener("abort", o);
+    }, c = () => {
+      t(), i();
+    }, o = () => {
+      r(e.error || new DOMException("AbortError", "AbortError")), i();
+    };
+    e.addEventListener("complete", c), e.addEventListener("error", o), e.addEventListener("abort", o);
+  });
+  y.set(e, n);
+}
+let I = {
+  get(e, n, t) {
+    if (e instanceof IDBTransaction) {
+      if (n === "done")
+        return y.get(e);
+      if (n === "store")
+        return t.objectStoreNames[1] ? void 0 : t.objectStore(t.objectStoreNames[0]);
     }
-}, b = () => {
-  localStorage.setItem("icon_cache", JSON.stringify(a.value));
-}, h = (t) => Date.now() - t.timestamp >= t.ttl, f = async (t, e, n, o = w) => {
-  const c = a.value[t] || {}, s = c[e];
-  if (s && !h(s))
-    return s.url;
-  const r = await (await fetch(n)).blob(), i = URL.createObjectURL(r);
-  return a.value[t] = {
-    ...c,
-    [e]: { url: i, timestamp: Date.now(), ttl: o }
-  }, b(), i;
-}, p = async (t, e) => {
-  const n = e.map((o) => f(t, o.key, o.url, o.ttl));
-  return Promise.all(n);
-}, v = async () => {
-  const t = Date.now();
-  for (const e in a.value) {
-    const n = a.value[e];
-    for (const o in n) {
-      const c = n[o];
-      if (h(c))
-        try {
-          debugger;
-          const l = await (await fetch(c.url)).blob(), r = URL.createObjectURL(l);
-          URL.revokeObjectURL(c.url), c.url = r, c.timestamp = t;
-        } catch {
-          console.warn(`[iconCache] 刷新失败: ${e}/${o}`);
-        }
-    }
+    return d(e[n]);
+  },
+  set(e, n, t) {
+    return e[n] = t, !0;
+  },
+  has(e, n) {
+    return e instanceof IDBTransaction && (n === "done" || n === "store") ? !0 : n in e;
   }
-  b();
 };
-m();
-const u = {
-  icons: a,
-  getIcon: f,
-  preloadIcons: p,
-  autoRefresh: v
-}, L = {
-  install(t) {
-    t.config.globalProperties.$icon = u, t.provide("$icon", u);
+function L(e) {
+  I = e(I);
+}
+function O(e) {
+  return S().includes(e) ? function(...n) {
+    return e.apply(h(this), n), d(this.request);
+  } : function(...n) {
+    return d(e.apply(h(this), n));
+  };
+}
+function T(e) {
+  return typeof e == "function" ? O(e) : (e instanceof IDBTransaction && A(e), D(e, V()) ? new Proxy(e, I) : e);
+}
+function d(e) {
+  if (e instanceof IDBRequest)
+    return j(e);
+  if (g.has(e))
+    return g.get(e);
+  const n = T(e);
+  return n !== e && (g.set(e, n), m.set(n, e)), n;
+}
+const h = (e) => m.get(e);
+function v(e, n, { blocked: t, upgrade: r, blocking: i, terminated: c } = {}) {
+  const o = indexedDB.open(e, n), a = d(o);
+  return r && o.addEventListener("upgradeneeded", (s) => {
+    r(d(o.result), s.oldVersion, s.newVersion, d(o.transaction), s);
+  }), t && o.addEventListener("blocked", (s) => t(
+    // Casting due to https://github.com/microsoft/TypeScript-DOM-lib-generator/pull/1405
+    s.oldVersion,
+    s.newVersion,
+    s
+  )), a.then((s) => {
+    c && s.addEventListener("close", () => c()), i && s.addEventListener("versionchange", (u) => i(u.oldVersion, u.newVersion, u));
+  }).catch(() => {
+  }), a;
+}
+const N = ["get", "getKey", "getAll", "getAllKeys", "count"], W = ["put", "add", "delete", "clear"], l = /* @__PURE__ */ new Map();
+function E(e, n) {
+  if (!(e instanceof IDBDatabase && !(n in e) && typeof n == "string"))
+    return;
+  if (l.get(n))
+    return l.get(n);
+  const t = n.replace(/FromIndex$/, ""), r = n !== t, i = W.includes(t);
+  if (
+    // Bail if the target doesn't exist on the target. Eg, getAll isn't in Edge.
+    !(t in (r ? IDBIndex : IDBObjectStore).prototype) || !(i || N.includes(t))
+  )
+    return;
+  const c = async function(o, ...a) {
+    const s = this.transaction(o, i ? "readwrite" : "readonly");
+    let u = s.store;
+    return r && (u = u.index(a.shift())), (await Promise.all([
+      u[t](...a),
+      i && s.done
+    ]))[0];
+  };
+  return l.set(n, c), c;
+}
+L((e) => ({
+  ...e,
+  get: (n, t, r) => E(n, t) || e.get(n, t, r),
+  has: (n, t) => !!E(n, t) || e.has(n, t)
+}));
+const F = ["continue", "continuePrimaryKey", "advance"], P = {}, B = /* @__PURE__ */ new WeakMap(), x = /* @__PURE__ */ new WeakMap(), k = {
+  get(e, n) {
+    if (!F.includes(n))
+      return e[n];
+    let t = P[n];
+    return t || (t = P[n] = function(...r) {
+      B.set(this, x.get(this)[n](...r));
+    }), t;
+  }
+};
+async function* K(...e) {
+  let n = this;
+  if (n instanceof IDBCursor || (n = await n.openCursor(...e)), !n)
+    return;
+  n = n;
+  const t = new Proxy(n, k);
+  for (x.set(t, n), m.set(t, h(n)); n; )
+    yield t, n = await (B.get(t) || n.continue()), B.delete(t);
+}
+function M(e, n) {
+  return n === Symbol.asyncIterator && D(e, [IDBIndex, IDBObjectStore, IDBCursor]) || n === "iterate" && D(e, [IDBIndex, IDBObjectStore]);
+}
+L((e) => ({
+  ...e,
+  get(n, t, r) {
+    return M(n, t) ? K : e.get(n, t, r);
+  },
+  has(n, t) {
+    return M(n, t) || e.has(n, t);
+  }
+}));
+const C = "images-db", f = "images", R = (e) => typeof e == "string" ? parseInt(e.replace(/\D/g, "")) || 1 : e || 1, $ = async () => new Promise((e, n) => {
+  const t = indexedDB.open(C);
+  t.onsuccess = () => {
+    const r = t.result.version;
+    t.result.close(), e(r);
+  }, t.onerror = () => n(t.error), t.onupgradeneeded = (r) => e(r.oldVersion || 0);
+}), _ = async (e) => v(C, e, {
+  upgrade(n) {
+    n.objectStoreNames.contains(f) || n.createObjectStore(f);
+  }
+}), p = async (e) => {
+  const n = R(e), t = await $(), r = () => _(n);
+  return {
+    setImage: async (o, a) => {
+      if (n === t)
+        return;
+      await (await r()).put(f, a, o);
+    },
+    getImage: async (o) => (await r()).get(f, o),
+    version: n,
+    oldVersion: t
+  };
+}, z = {
+  install(e) {
+    e.config.globalProperties.$imageDB = p, e.provide("$imageDB", p);
   }
 };
 export {
-  u as $icon,
-  L as default
+  p as imageDB,
+  z as imageDBPlugin
 };

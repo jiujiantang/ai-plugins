@@ -1,14 +1,6 @@
-export interface IconItem {
-    key: string;
-    url: string;
-    ttl?: number; // 图标缓存时间（毫秒）
+export interface ImageDB {
+    setImage: (key: string, blob: Blob) => Promise<void>;
+    getImage: (key: string) => Promise<Blob | undefined>;
+    version: number;
+    oldVersion: number;
 }
-
-export interface CachedIcon {
-    url: string;
-    timestamp: number;
-    ttl: number;
-}
-
-export type IconMap = Record<string, CachedIcon>;
-export type GroupedIcons = Record<string, IconMap>;

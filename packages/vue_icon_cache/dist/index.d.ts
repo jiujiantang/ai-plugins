@@ -1,10 +1,9 @@
 import { App } from 'vue';
-import { $icon } from './store';
-import { IconItem } from './types';
+import { ImageDB } from './types';
+import { default as imageDB } from './store';
 
-declare const _default: {
+export declare const imageDBPlugin: {
     install(app: App): void;
 };
-export default _default;
-export { $icon };
-export type { IconItem };
+export { imageDB };
+export type { ImageDB };
