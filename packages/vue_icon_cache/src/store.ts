@@ -49,6 +49,11 @@ const config = async (versionStr: string | number) => {
     // 返回封装后的工具方法
     const getDB = () => openDatabase(version);
 
+    const closeDB =async () => {
+        const db = await getDB();
+        db.close();
+    }
+
     const setImage = async (key: string, blob: Blob) => {
         if (version === oldVersion) return; // 版本一致不写入
         const db = await getDB();
@@ -62,6 +67,7 @@ const config = async (versionStr: string | number) => {
 
     // 返回简洁接口（也可 export default）
     return {
+        closeDB,
         setImage,
         getImage,
         version,

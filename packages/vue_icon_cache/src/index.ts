@@ -6,7 +6,7 @@ import imageDB from './store'; // 默认导出的是初始化方法等
 export const imageDBPlugin = {
   install(app: App) {
     app.config.globalProperties.$imageDB = imageDB;
-    app.provide('$imageDB', imageDB); // inject('$imageDB')
+    app.provide('$imageDB', imageDB); // 组件引用：inject('$imageDB')
   },
 };
 

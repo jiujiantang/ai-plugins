@@ -1,4 +1,4 @@
-const D = (e, n) => n.some((t) => e instanceof t);
+const g = (e, n) => n.some((t) => e instanceof t);
 let w, b;
 function V() {
   return w || (w = [
@@ -16,7 +16,7 @@ function S() {
     IDBCursor.prototype.continuePrimaryKey
   ]);
 }
-const y = /* @__PURE__ */ new WeakMap(), g = /* @__PURE__ */ new WeakMap(), m = /* @__PURE__ */ new WeakMap();
+const y = /* @__PURE__ */ new WeakMap(), m = /* @__PURE__ */ new WeakMap(), l = /* @__PURE__ */ new WeakMap();
 function j(e) {
   const n = new Promise((t, r) => {
     const i = () => {
@@ -28,7 +28,7 @@ function j(e) {
     };
     e.addEventListener("success", c), e.addEventListener("error", o);
   });
-  return m.set(n, e), n;
+  return l.set(n, e), n;
 }
 function A(e) {
   if (y.has(e))
@@ -73,17 +73,17 @@ function O(e) {
   };
 }
 function T(e) {
-  return typeof e == "function" ? O(e) : (e instanceof IDBTransaction && A(e), D(e, V()) ? new Proxy(e, I) : e);
+  return typeof e == "function" ? O(e) : (e instanceof IDBTransaction && A(e), g(e, V()) ? new Proxy(e, I) : e);
 }
 function d(e) {
   if (e instanceof IDBRequest)
     return j(e);
-  if (g.has(e))
-    return g.get(e);
+  if (m.has(e))
+    return m.get(e);
   const n = T(e);
-  return n !== e && (g.set(e, n), m.set(n, e)), n;
+  return n !== e && (m.set(e, n), l.set(n, e)), n;
 }
-const h = (e) => m.get(e);
+const h = (e) => l.get(e);
 function v(e, n, { blocked: t, upgrade: r, blocking: i, terminated: c } = {}) {
   const o = indexedDB.open(e, n), a = d(o);
   return r && o.addEventListener("upgradeneeded", (s) => {
@@ -98,12 +98,12 @@ function v(e, n, { blocked: t, upgrade: r, blocking: i, terminated: c } = {}) {
   }).catch(() => {
   }), a;
 }
-const N = ["get", "getKey", "getAll", "getAllKeys", "count"], W = ["put", "add", "delete", "clear"], l = /* @__PURE__ */ new Map();
+const N = ["get", "getKey", "getAll", "getAllKeys", "count"], W = ["put", "add", "delete", "clear"], D = /* @__PURE__ */ new Map();
 function E(e, n) {
   if (!(e instanceof IDBDatabase && !(n in e) && typeof n == "string"))
     return;
-  if (l.get(n))
-    return l.get(n);
+  if (D.get(n))
+    return D.get(n);
   const t = n.replace(/FromIndex$/, ""), r = n !== t, i = W.includes(t);
   if (
     // Bail if the target doesn't exist on the target. Eg, getAll isn't in Edge.
@@ -118,7 +118,7 @@ function E(e, n) {
       i && s.done
     ]))[0];
   };
-  return l.set(n, c), c;
+  return D.set(n, c), c;
 }
 L((e) => ({
   ...e,
@@ -141,11 +141,11 @@ async function* K(...e) {
     return;
   n = n;
   const t = new Proxy(n, k);
-  for (x.set(t, n), m.set(t, h(n)); n; )
+  for (x.set(t, n), l.set(t, h(n)); n; )
     yield t, n = await (B.get(t) || n.continue()), B.delete(t);
 }
 function M(e, n) {
-  return n === Symbol.asyncIterator && D(e, [IDBIndex, IDBObjectStore, IDBCursor]) || n === "iterate" && D(e, [IDBIndex, IDBObjectStore]);
+  return n === Symbol.asyncIterator && g(e, [IDBIndex, IDBObjectStore, IDBCursor]) || n === "iterate" && g(e, [IDBIndex, IDBObjectStore]);
 }
 L((e) => ({
   ...e,
@@ -169,12 +169,15 @@ const C = "images-db", f = "images", R = (e) => typeof e == "string" ? parseInt(
 }), p = async (e) => {
   const n = R(e), t = await $(), r = () => _(n);
   return {
-    setImage: async (o, a) => {
+    closeDB: async () => {
+      (await r()).close();
+    },
+    setImage: async (a, s) => {
       if (n === t)
         return;
-      await (await r()).put(f, a, o);
+      await (await r()).put(f, s, a);
     },
-    getImage: async (o) => (await r()).get(f, o),
+    getImage: async (a) => (await r()).get(f, a),
     version: n,
     oldVersion: t
   };
