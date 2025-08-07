@@ -17,13 +17,13 @@ const defIcon = ref<boolean>(0)
 const bgUrl = ref<string>("");
 const holderClick = () => {
   setTimeout(() => {
-    bgUrl.value = `https://lykstatictest.3d66.com/liuyunku/application/packages/recharge/public/image/${defIcon.value ? '1':'3'}-right1.png`;
+    bgUrl.value = `/public/image/${defIcon.value ? '1':'3'}-right1.png`;
     defIcon.value = !defIcon.value
   }, 500);
 }
 onMounted(() => {
   nextTick(()=>{
-    bgUrl.value = "https://lykstatictest.3d66.com/liuyunku/application/packages/recharge/public/image/1-right1.png"
+    bgUrl.value = "/public/image/1-right1.png"
   })
 })
 </script>

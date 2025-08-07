@@ -1,12 +1,3 @@
-# 调试&部署
-```shell
-# 调试组件
-npm run dev
-# 发布组件
-npm run build
-npm publish
-```
-# 调用
 ```vue
 <template>
   <BgSwitcher :width="1030" :height="650" :url="bgUrl">
