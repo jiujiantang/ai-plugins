@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, computed, defineProps } from 'vue';
+import {ref, watch, computed, defineProps, nextTick} from 'vue';
 
 const props = defineProps<{
   url: string;
@@ -10,7 +10,9 @@ const baseLayer = ref<HTMLElement>();
 const overlayLayer = ref<HTMLElement>();
 
 watch(() => props.url, (newUrl) => {
-  if (newUrl) updateBackground(newUrl);
+  nextTick(()=>{
+    if (newUrl) updateBackground(newUrl);
+  })
 }, { immediate: true });
 
 const containerStyle = computed(() => ({
@@ -62,12 +64,12 @@ function updateBackground(url: string) {
     z-index: 2;
     opacity: 0;
   }
-}
-.content {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  inset: 0;
-  z-index: 9;
+  .content {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+    z-index: 9;
+  }
 }
 </style>

@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue';
 import dts from 'vite-plugin-dts';
 import path from 'path';
 import pkg from './package.json';
+import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 
 export default defineConfig(() => {
   const rootDir = process.env.NODE_ENV === 'development' ? 'playground' : '.';
@@ -14,21 +15,21 @@ export default defineConfig(() => {
     build: {
       lib: {
         entry: path.resolve(__dirname, 'src/index.ts'),
-        name: 'VueIconCachePlugin',
+        name: 'vue-icon-in',
         fileName: format => `index.${format}.js`,
         formats: ['es', 'cjs'],
       },
       rollupOptions: {
-        external: ['vue', 'pinia'],
+        external: ['vue'],
         output: {
           globals: {
             vue: 'Vue',
-            pinia: 'Pinia',
           },
         },
       },
+      cssCodeSplit: true, // 提取css
     },
-    plugins: [vue(), dts()],
+    plugins: [vue(), dts(), cssInjectedByJsPlugin()],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, 'src'),
