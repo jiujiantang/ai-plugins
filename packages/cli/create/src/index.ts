@@ -24,7 +24,7 @@ Options:
   -t, --template NAME        use a specific template
 
 Available templates:
-${chalk.green     ('vue-ts         vue'      )}`
+${chalk.green     ('vue-ts'      )}`
 
 // 格式化目标目录名，去掉空格并删除尾部的斜杠
 function formatTargetDir(targetDir: string | undefined) {
@@ -54,7 +54,6 @@ const FRAMEWORKS: Framework[] = [
         color: chalk.yellow,
         variants: [
             { name: 'vue-ts', display: 'TypeScript', color: chalk.yellow },
-            { name: 'vue', display: 'JavaScript', color: chalk.yellow },
         ],
     }
 ]
@@ -213,7 +212,6 @@ async function init() {
     if (root !== process.cwd()) {
         console.log(`  cd ${root}`)
     }
-    console.log(`  pnpm add ../common --filter ${projectName}`) // 提示安装公共依赖
     console.log(`  pnpm install`) // 提示用户安装依赖
     console.log(`  npm run dev`) // 提示用户运行开发服务器
     console.log()

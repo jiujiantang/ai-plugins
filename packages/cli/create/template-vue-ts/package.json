@@ -1,30 +1,33 @@
 {
-  "name": "year25",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite --host",
-    "build": "vite build",
-    "preview": "vite preview",
-    "type-check": "vue-tsc --noEmit"
+  "name": "template-vue-ts",
+  "version": "1.0.0",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.cjs.js"
+    }
   },
-  "dependencies": {
-    "commander": "^14.0.0",
-    "common": "link:..\\common"
+  "files": [
+    "dist"
+  ],
+  "peerDependencies": {
+    "vue": "^3.0.0"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.4",
-    "@tailwindcss/vite": "^4.1.4",
-    "@vitejs/plugin-legacy": "^6.1.1",
-    "@vitejs/plugin-vue": "^5.2.1",
-    "autoprefixer": "^10.4.21",
-    "postcss": "^8.5.3",
-    "tailwindcss": "^4.1.4",
-    "typescript": "^5.8.3",
-    "vite": "^6.1.0",
-    "vite-plugin-html": "^3.2.2",
-    "vite-plugin-mock": "^3.0.2",
-    "vue-tsc": "^2.2.10"
+    "cross-env": "^10.0.0",
+    "typescript": "^5.0.0",
+    "vite": "^4.0.0",
+    "vite-plugin-dts": "^3.0.0",
+    "vue": "^3.4.0"
+  },
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development vite --host",
+    "build": "cross-env NODE_ENV=production vite build"
+  },
+  "dependencies": {
+    "idb": "^8.0.3"
   }
 }

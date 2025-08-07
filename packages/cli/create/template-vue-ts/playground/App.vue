@@ -5,6 +5,7 @@
       <strong>{{ usageMB.toFixed(1) }} MB</strong> /
       <strong>{{ quotaMB.toFixed(0) }} MB</strong>
       （{{ percent.toFixed(2) }}%）
+      {{ `DB版本号：to ${$imageDB?.version} from ${$imageDB?.oldVersion}` }}
     </p>
     <div class="bar-container">
       <div
@@ -17,7 +18,7 @@
     </div>
   </div>
   <div class="op">
-    <button @click="setImage">Set Image</button>
+    <button @click="setImage">Set default Image to IndexedDB</button>
     <button @click="loadImage">Load Image from IndexedDB</button>
     <img v-if="imageSrc" :src="imageSrc" alt="Loaded Image" />
   </div>
@@ -71,8 +72,6 @@ declare const __APP_VERSION__: string;
 let $imageDB
 onMounted(async () => {
   $imageDB = await imageDB(__APP_VERSION__);
-  console.log("DB版本号：", $imageDB.version, $imageDB.oldVersion);
-  await setImage()
 
   if (navigator.storage && navigator.storage.estimate) {
     const estimate = await navigator.storage.estimate();
