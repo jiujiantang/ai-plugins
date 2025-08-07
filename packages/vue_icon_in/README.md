@@ -1,3 +1,4 @@
+解决图片加载闪烁问题
 ```vue
 <template>
   <BgSwitcher :width="1030" :height="650" :url="bgUrl">
