@@ -1,112 +1,53 @@
 <template>
-  <div class="storage-quota">
-    <p>
-      📦 IndexDB使用存储：
-      <strong>{{ usageMB.toFixed(1) }} MB</strong> /
-      <strong>{{ quotaMB.toFixed(0) }} MB</strong>
-      （{{ percent.toFixed(2) }}%）
-      {{ `DB版本号：to ${$imageDB?.version} from ${$imageDB?.oldVersion}` }}
-    </p>
-    <div class="bar-container">
-      <div
-        class="bar-fill"
-        :style="{
-          width: percent + '%',
-          backgroundColor: barColor
-        }"
-      ></div>
-    </div>
-  </div>
   <div class="op">
-    <button @click="setImage">Set default Image to IndexedDB</button>
-    <button @click="loadImage">Load Image from IndexedDB</button>
-    <img v-if="imageSrc" :src="imageSrc" alt="Loaded Image" />
+    <button @click="holderClick">Switcher Icon</button>
+  </div>
+  <div class="wrap">
+    <BgSwitcher :url="bgUrl">
+      <h1 class="overlay-text">Hello World</h1>
+    </BgSwitcher>
   </div>
 </template>
 
-<script lang="ts" setup>
-import { imageDB } from "@/index";
-import { ref, computed, onMounted } from 'vue';
+<script setup lang="ts">
+import {nextTick, onMounted, ref} from 'vue';
+import { BgSwitcher } from "@/index"
 
-const usage = ref(0);
-const quota = ref(1); // 防止除以 0
-const usageMB = computed(() => usage.value / (1024 * 1024));
-const quotaMB = computed(() => quota.value / (1024 * 1024));
-const percent = computed(() => (usage.value / quota.value) * 100);
-const barColor = computed(() => {
-  if (percent.value < 50) return '#4caf50'; // green
-  if (percent.value < 80) return '#ff9800'; // orange
-  return '#f44336'; // red
-});
-
-const imageSrc = ref<string|null>(null);
-const urlToBlob = async (url: string) => {
-  try {
-    const response = await fetch(url);
-    if (response.ok) {
-      return await response.blob();
-    }
-  } catch (error) {
-    console.error('Error loading image:', error);
-  }
+const defIcon = ref<boolean>(0)
+const bgUrl = ref<string>("");
+const holderClick = () => {
+  setTimeout(() => {
+    bgUrl.value = `https://lykstatictest.3d66.com/liuyunku/application/packages/recharge/public/image/${defIcon.value ? '1':'3'}-right1.png`;
+    defIcon.value = !defIcon.value
+  }, 500);
 }
-const setImage = async () => {
-  const bgArr = ["./assets/images/bg0.png","./assets/images/bg1.png"]
-  bgArr.map(async (item, index) => {
-    const file = await urlToBlob(item);
-    if(file){
-      await $imageDB.setImage(index, file);
-    }
+onMounted(() => {
+  nextTick(()=>{
+    bgUrl.value = "https://lykstatictest.3d66.com/liuyunku/application/packages/recharge/public/image/1-right1.png"
   })
-}
-const loadImage = async () => {
-  const blob = await $imageDB.getImage(0);
-  if (blob) {
-    imageSrc.value = URL.createObjectURL(blob);
-  } else {
-    console.error('No image found in IndexedDB.');
-  }
-}
-
-declare const __APP_VERSION__: string;
-let $imageDB
-onMounted(async () => {
-  $imageDB = await imageDB(__APP_VERSION__);
-
-  if (navigator.storage && navigator.storage.estimate) {
-    const estimate = await navigator.storage.estimate();
-    usage.value = estimate.usage || 0;
-    quota.value = estimate.quota || 1;
-  }
-});
+})
 </script>
 
 <style scoped>
+.wrap {
+  width: 80px;
+  height: 80px;
+  border: 1px solid #ccc;
+  margin-top: 10px;
+  margin-left: 2px;
+  .overlay-text {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    font-size: 12px;
+    color: #ccc;
+    text-align: center;
+  }
+}
 .op {
+  width: 100px;
+  height: 40px;
   display: flex;
-  flex-direction: column;
-}
-.op button {
-  max-width: 200px;
-}
-
-.storage-quota {
-  font-family: system-ui, sans-serif;
-  max-width: 600px;
-  padding: 8px;
-}
-
-.bar-container {
-  width: 100%;
-  height: 16px;
-  border-radius: 8px;
-  background-color: #eee;
-  overflow: hidden;
-  margin-top: 4px;
-}
-
-.bar-fill {
-  height: 100%;
-  transition: width 0.3s ease;
+  justify-content: center;
 }
 </style>

@@ -1,15 +1,10 @@
 import type { App } from 'vue';
-import type { ImageDB } from './types'; // 建议导出类型
-import imageDB from './store'; // 默认导出的是初始化方法等
+import BgSwitcher from './BgSwitcher.vue';
 
-// 插件形式注册：app.use(imageDBPlugin)
-export const imageDBPlugin = {
+export default {
   install(app: App) {
-    app.config.globalProperties.$imageDB = imageDB;
-    app.provide('$imageDB', imageDB); // 组件引用：inject('$imageDB')
-  },
+    app.component('BgSwitcher', BgSwitcher);
+  }
 };
 
-// 命名导出，清晰类型
-export { imageDB };
-export type { ImageDB };
+export { BgSwitcher };
