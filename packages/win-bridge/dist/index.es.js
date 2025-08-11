@@ -1,6 +1,6 @@
 var d = Object.defineProperty;
-var g = (o, e, t) => e in o ? d(o, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : o[e] = t;
-var s = (o, e, t) => (g(o, typeof e != "symbol" ? e + "" : e, t), t);
+var g = (r, e, t) => e in r ? d(r, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : r[e] = t;
+var s = (r, e, t) => (g(r, typeof e != "symbol" ? e + "" : e, t), t);
 import { provide as a, inject as c } from "vue";
 class h {
   constructor() {
@@ -9,8 +9,8 @@ class h {
     this.debug = !1, this.logContainer = null;
   }
   createDebugPanel(e) {
-    const t = document.createElement("div"), r = document.querySelector(e);
-    r ? (r.appendChild(t), this.logContainer = t) : console.warn(`Selector "${e}" not found.`);
+    const t = document.createElement("div"), o = document.querySelector(e);
+    o ? (o.appendChild(t), this.logContainer = t) : console.warn(`Selector "${e}" not found.`);
   }
   debugPanel(e) {
     this.debug = !0, e && this.createDebugPanel(e);
@@ -23,11 +23,11 @@ class h {
   }
   callExternalMethod(e, ...t) {
     this.log(`Calling method: ${e} with args: ${JSON.stringify(t)}`);
-    const r = window.external;
+    const o = window.external;
     try {
-      if (typeof window < "u" && r && typeof r[e] == "function")
+      if (typeof window < "u" && o && typeof o[e] == "function")
         try {
-          const n = r[e](...t);
+          const n = o[e](...t);
           return this.log(`Method ${e} returned: ${n}`), n;
         } catch (n) {
           this.log(`Error in method: ${e}, Error: ${n instanceof Error ? n.message : n}`);
@@ -35,15 +35,15 @@ class h {
       else
         this.log(`Method ${e} not found`);
     } catch (n) {
-      this.log(n);
+      n instanceof Error ? this.log(n.message) : this.log("An unknown error occurred");
     }
     return null;
   }
   registerClientMethod(e, t) {
-    typeof window < "u" && (window[e] = (...r) => {
-      this.log(`Client method called: ${e} with args: ${JSON.stringify(r)}`);
+    typeof window < "u" && (window[e] = (...o) => {
+      this.log(`Client method called: ${e} with args: ${JSON.stringify(o)}`);
       try {
-        t(...r);
+        t(...o);
       } catch (n) {
         this.log(`Error in callback for ${e}, Error: ${n instanceof Error ? n.message : n}`);
       }
@@ -51,19 +51,19 @@ class h {
   }
 }
 function f() {
-  const o = new h();
+  const r = new h();
   a("windowBridge", {
     debugPanel: (i) => {
-      o.debugPanel(i);
+      r.debugPanel(i);
     },
     logger: (i) => {
-      o.log(i);
+      r.log(i);
     },
     callExternalMethod: (i, ...l) => {
-      o.callExternalMethod(i, ...l);
+      r.callExternalMethod(i, ...l);
     },
     registerClientMethod: (i, l) => {
-      o.registerClientMethod(i, l);
+      r.registerClientMethod(i, l);
     }
   });
 }
