@@ -1,15 +1,36 @@
-import type { App } from 'vue';
-import type { ImageDB } from './types'; // 建议导出类型
-import imageDB from './store'; // 默认导出的是初始化方法等
+import WindowBridge from './WindowBridge'
+import {provide,inject} from "vue";
 
-// 插件形式注册：app.use(imageDBPlugin)
-export const imageDBPlugin = {
-  install(app: App) {
-    app.config.globalProperties.$imageDB = imageDB;
-    app.provide('$imageDB', imageDB); // 组件引用：inject('$imageDB')
-  },
-};
+export function useWindowBridgeProvider() {
 
-// 命名导出，清晰类型
-export { imageDB };
-export type { ImageDB };
+  const windowBridge = new WindowBridge()
+
+  const debugPanel = (logContainerSelector?: string) => {
+    windowBridge.debugPanel(logContainerSelector)
+  }
+  const logger = (message: string) => {
+    windowBridge.log(message)
+  }
+  const callExternalMethod = (method: string, ...args: any[]) => {
+    windowBridge.callExternalMethod(method, ...args)
+  }
+  const registerClientMethod = (funcName: string, callback: (...args: any[]) => void) => {
+    windowBridge.registerClientMethod(funcName, callback)
+  }
+
+  provide('windowBridge', {
+    debugPanel,
+    logger,
+    callExternalMethod,
+    registerClientMethod
+  })
+}
+
+export function useWindowBridge() {
+  return inject<{
+    debugPanel: (logContainerSelector?: string) => void
+    logger: (message: string) => void,
+    callExternalMethod: (method: string, ...args: any[]) => void,
+    registerClientMethod: (funcName: string, callback: (...args: any[]) => void) => void,
+  }>('windowBridge')!
+}

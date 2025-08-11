@@ -14,9 +14,16 @@ npm install vue_icon_cache
 ```
 
 ### vue_icon_in
-VUE图片加载防闪烁插件
+VUE图片加载淡入防闪烁插件
 ```shell
 pnpm install vue_icon_in
 npm install vue_icon_in
+```
+
+### win-bridge
+windows通用连接桥插件，vue版本
+```shell
+pnpm install win-bridge
+npm install win-bridge
 ```
 

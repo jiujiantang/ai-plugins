@@ -1,6 +1,6 @@
 {
   "name": "win-bridge",
-  "version": "1.0.7",
+  "version": "1.0.1",
   "main": "dist/index.cjs.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
@@ -17,17 +17,19 @@
     "vue": "^3.0.0"
   },
   "devDependencies": {
+    "@types/jest": "^30.0.0",
     "cross-env": "^10.0.0",
-    "typescript": "^5.0.0",
+    "jest": "^30.0.5",
+    "jest-environment-jsdom": "^30.0.5",
+    "ts-jest": "^29.4.1",
+    "typescript": "^5.8.3",
     "vite": "^4.0.0",
     "vite-plugin-dts": "^3.0.0",
     "vue": "^3.4.0"
   },
   "scripts": {
     "dev": "cross-env NODE_ENV=development vite --host",
-    "build": "cross-env NODE_ENV=production vite build"
-  },
-  "dependencies": {
-    "idb": "^8.0.3"
+    "build": "cross-env NODE_ENV=production vite build",
+    "test": "jest"
   }
 }
