@@ -27,3 +27,9 @@ pnpm install win-bridge
 npm install win-bridge
 ```
 
+### vue-count-down
+VUE倒计时控件
+```shell
+pnpm install vue-count-down
+npm install vue-count-down
+```
