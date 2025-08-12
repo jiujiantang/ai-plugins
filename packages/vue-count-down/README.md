@@ -1,7 +1,7 @@
 解决单个、多个倒计时声明问题
 ```vue
 <script setup lang="ts">
-import Countdown, {countdownManager} from 'vue-count-down'
+import Countdown, {countdownManager} from 'vue-countdown-plugin'
 
 const endA = Date.now() + 10000;
 const endC = Date.now() + 20000;
