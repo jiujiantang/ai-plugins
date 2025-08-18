@@ -20,6 +20,10 @@
     "src/**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.tsx",
-    "src/**/*.vue"
+    "src/**/*.vue",
+    "playground/**/*.ts",
+    "playground/**/*.d.ts",
+    "playground/**/*.tsx",
+    "playground/**/*.vue"
   ]
 }

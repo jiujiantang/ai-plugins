@@ -5,7 +5,6 @@ defineProps<{
 </script>
 
 <template>
-    <img v-if="image" :src="image" class="popup-img" alt=""/>
     <div v-html="html"></div>
 </template>
 

@@ -1,5 +1,5 @@
 import { createVNode, render } from "vue";
-import Popup from "../components/Popup.vue";
+import Popup from "@/components/Popup.vue";
 import PopupOptions from "@/types";
 
 let container: HTMLElement | null = null; // 用于渲染弹窗的容器
