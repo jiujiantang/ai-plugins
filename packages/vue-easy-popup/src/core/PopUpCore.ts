@@ -1,6 +1,6 @@
 import { createVNode, render } from "vue";
 import Popup from "@/components/Popup.vue";
-import PopupOptions from "@/types";
+import {PopupOptions, ClickEvent} from "@/types";
 
 let container: HTMLElement | null = null; // 用于渲染弹窗的容器
 
@@ -13,13 +13,14 @@ export function open(options: PopupOptions) {
 
     // 为 Popup 组件创建 Vue 虚拟节点
     options = {...options, onClose: () => {
-        console.log("close");
-        close(); // 关闭弹窗
-        options.close?.(); // 调用用户指定的 onClose 函数（如果有）
+        close();
+        options.close?.(ClickEvent.Close);
     }, onCancel: () => {
-        console.log("cancel");
+        close();
+        options.close?.(ClickEvent.Cancel);
     }, onOk: () => {
-        console.log("ok");
+        close();
+        options.close?.(ClickEvent.Ok);
     }}
     const vnode = createVNode(Popup, {
         ...options

@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue';
 import dts from 'vite-plugin-dts';
 import path from 'path';
 import pkg from './package.json';
+import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 
 export default defineConfig(() => {
   const rootDir = process.env.NODE_ENV === 'development' ? 'playground' : '.';
@@ -28,7 +29,7 @@ export default defineConfig(() => {
         },
       },
     },
-    plugins: [vue(), dts()],
+    plugins: [vue(), dts(), cssInjectedByJsPlugin()],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, 'src'),

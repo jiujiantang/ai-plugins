@@ -33,3 +33,10 @@ VUE倒计时控件
 pnpm install vue-countdown-plugin
 npm install vue-countdown-plugin
 ```
+
+### vue-easy-popup
+解决弹窗使用的复杂性问题
+```shell
+pnpm install vue-easy-popup
+npm install vue-easy-popup
+```

@@ -19,21 +19,20 @@ const ok = () => {
 };
 </script>
 <template>
-  <div class="popup-mask" @click.self="close">
-    <div class="popup-content" >
+  <div class="vue-popup-mask" @click.self="close">
+    <div class="vue-popup-content" >
       <template v-if="type === 'html'">
         <HtmlContentPlugin :html="content" />
       </template>
-      <div class="opt">
-        <button @click="cancel"></button>
-        <button @click="ok"></button>
-      </div>
+      <button class="vue-popup-closeBtn" @click="close"></button>
+      <button class="vue-popup-cancelBtn" @click="cancel"></button>
+      <button class="vue-popup-okBtn" @click="ok"></button>
     </div>
   </div>
 </template>
 
-<style scoped>
-.popup-mask {
+<style lang="less">
+.vue-popup-mask {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.5);
@@ -41,7 +40,14 @@ const ok = () => {
   justify-content: center;
   align-items: center;
 }
-.popup-content {
+.vue-popup-content {
   position: relative;
+}
+.vue-popup-closeBtn, .vue-popup-cancelBtn, .vue-popup-okBtn{
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  z-index: 9;
 }
 </style>

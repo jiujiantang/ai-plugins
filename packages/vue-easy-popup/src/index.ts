@@ -1,6 +1,6 @@
 import type { App } from 'vue';
 import { open, close } from "@/core/PopUpCore";
-import PopupOptions from "@/types";
+import {PopupOptions} from "@/types";
 
 export default {
   install(app: App) {
