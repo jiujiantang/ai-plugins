@@ -4,8 +4,10 @@ export declare enum ClickEvent {
     Ok = "Ok"
 }
 export interface PopupOptions {
+    id: string;
     type: "html";
     content: string;
+    showClose: boolean;
     close?: (type: ClickEvent) => void;
     onClose?: ((...args: any[]) => any) | undefined;
     onCancel?: ((...args: any[]) => any) | undefined;

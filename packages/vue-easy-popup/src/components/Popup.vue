@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import HtmlContentPlugin from "@/plugins/HtmlContentPlugin.vue";
+import { PopupOptions } from "@/types";
 
-const props = defineProps<{
-  type: "html";
-  content: string;
-}>();
+const props = defineProps<PopupOptions>();
 
 const emit = defineEmits(["close","cancel","ok"]);
 
+function handleMaskClick() {
+  if (!props.showClose) {
+    emit("close");
+  }
+}
 const close = () => {
   emit("close");
 };
@@ -19,12 +22,12 @@ const ok = () => {
 };
 </script>
 <template>
-  <div class="vue-popup-mask" @click.self="close">
+  <div class="vue-popup-mask" @click.self="handleMaskClick">
     <div class="vue-popup-content" >
       <template v-if="type === 'html'">
         <HtmlContentPlugin :html="content" />
       </template>
-      <button class="vue-popup-closeBtn" @click="close"></button>
+      <button v-if="showClose" class="vue-popup-closeBtn" @click="close"></button>
       <button class="vue-popup-cancelBtn" @click="cancel"></button>
       <button class="vue-popup-okBtn" @click="ok"></button>
     </div>

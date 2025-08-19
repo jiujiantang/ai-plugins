@@ -9,6 +9,7 @@ export function open(options: PopupOptions) {
     if (container) close(); // 如果已有弹窗，先关闭
 
     container = document.createElement("div"); // 创建新的容器
+    container.id = options.id;
     document.body.appendChild(container); // 将其添加到页面中
 
     // 为 Popup 组件创建 Vue 虚拟节点

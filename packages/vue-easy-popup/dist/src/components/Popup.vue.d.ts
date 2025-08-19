@@ -1,14 +1,10 @@
-declare const _default: import('vue').DefineComponent<import('vue').ExtractPropTypes<__VLS_TypePropsToRuntimeProps<{
-    type: "html";
-    content: string;
-}>>, {}, {}, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+import { PopupOptions } from '../types';
+
+declare const _default: import('vue').DefineComponent<import('vue').ExtractPropTypes<__VLS_TypePropsToRuntimeProps<PopupOptions>>, {}, {}, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
     cancel: (...args: any[]) => void;
     close: (...args: any[]) => void;
     ok: (...args: any[]) => void;
-}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<__VLS_TypePropsToRuntimeProps<{
-    type: "html";
-    content: string;
-}>>> & Readonly<{
+}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<__VLS_TypePropsToRuntimeProps<PopupOptions>>> & Readonly<{
     onCancel?: ((...args: any[]) => any) | undefined;
     onClose?: ((...args: any[]) => any) | undefined;
     onOk?: ((...args: any[]) => any) | undefined;
