@@ -9,8 +9,8 @@ export function open(options: PopupOptions) {
     if (container) close(); // 如果已有弹窗，先关闭
 
     container = document.createElement("div"); // 创建新的容器
-    container.id = options.id;
-    document.body.appendChild(container); // 将其添加到页面中
+    if(options.id) container.id = options.id;
+    document.body.appendChild(container);
 
     // 为 Popup 组件创建 Vue 虚拟节点
     options = {...options, onClose: () => {
@@ -27,6 +27,12 @@ export function open(options: PopupOptions) {
         ...options
     });
     render(vnode, container);
+
+    if(options.type === "toast") {
+        setTimeout(()=>{
+            close();
+        },1000)
+    }
 }
 
 // 关闭弹窗并清理容器

@@ -37,40 +37,48 @@ function hideTooltip() {
     }
 }
 
+function applyEllipsis(el: HTMLElement, binding: DirectiveBinding<string>) {
+    // 强制文本单行显示 + 溢出省略
+    el.style.overflow = "hidden";
+    el.style.textOverflow = "ellipsis";
+    el.style.whiteSpace = "nowrap";
+    el.style.cursor = "default";
+
+    // 优先取指令绑定值，否则用元素的 innerText
+    const text = binding.value || el.innerText;
+
+    // 鼠标进入时检查是否溢出，溢出则显示 tooltip
+    el.addEventListener("mouseenter", (e) => {
+        if (el.scrollWidth > el.clientWidth) {
+            showTooltip(el, text, e as MouseEvent);
+        }
+    });
+
+    // 鼠标移动时，实时更新 tooltip 位置
+    el.addEventListener("mousemove", (e) => {
+        if (tooltipEl && tooltipEl.style.display === "block") {
+            tooltipEl.style.left = e.pageX + 10 + "px";
+            tooltipEl.style.top = e.pageY + 10 + "px";
+        }
+    });
+
+    // 鼠标离开时，隐藏 tooltip
+    el.addEventListener("mouseleave", () => {
+        hideTooltip();
+    });
+}
+
 /**
  * v-ellipsis-title 自定义指令
  * 功能：当文本内容溢出时，显示一个自定义 tooltip（替代系统的 title）
  */
 export const vEllipsisTitle = {
     mounted(el: HTMLElement, binding: DirectiveBinding) {
-        // 强制文本单行显示 + 溢出省略
-        el.style.overflow = "hidden";
-        el.style.textOverflow = "ellipsis";
-        el.style.whiteSpace = "nowrap";
-        el.style.cursor = "default";
-
-        // 优先取指令绑定值，否则用元素的 innerText
-        const text = binding.value || el.innerText;
-
-        // 鼠标进入时检查是否溢出，溢出则显示 tooltip
-        el.addEventListener("mouseenter", (e) => {
-            if (el.scrollWidth > el.clientWidth) {
-                showTooltip(el, text, e as MouseEvent);
-            }
-        });
-
-        // 鼠标移动时，实时更新 tooltip 位置
-        el.addEventListener("mousemove", (e) => {
-            if (tooltipEl && tooltipEl.style.display === "block") {
-                tooltipEl.style.left = e.pageX + 10 + "px";
-                tooltipEl.style.top = e.pageY + 10 + "px";
-            }
-        });
-
-        // 鼠标离开时，隐藏 tooltip
-        el.addEventListener("mouseleave", () => {
-            hideTooltip();
-        });
+        applyEllipsis(el, binding);
+    },
+    updated(el: HTMLElement, binding: DirectiveBinding) {
+        // 每次更新时重新处理
+        applyEllipsis(el, binding);
     },
     unmounted() {
         // 组件卸载时，隐藏 tooltip

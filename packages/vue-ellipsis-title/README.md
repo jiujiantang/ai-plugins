@@ -3,10 +3,10 @@
 ```ts
 import { createApp } from "vue";
 import App from "./App.vue";
-import VueTitlePlugin from "vue-title";
+import VueEllipsisTitlePlugin from "vue-ellipsis-title";
 
 const app = createApp(App);
-app.use(VueTitlePlugin);
+app.use(VueEllipsisTitlePlugin);
 app.mount("#app");
 ```
 ```vue

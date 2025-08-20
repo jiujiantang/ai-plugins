@@ -6,5 +6,6 @@ import { DirectiveBinding } from 'vue';
  */
 export declare const vEllipsisTitle: {
     mounted(el: HTMLElement, binding: DirectiveBinding): void;
+    updated(el: HTMLElement, binding: DirectiveBinding): void;
     unmounted(): void;
 };

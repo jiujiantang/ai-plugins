@@ -3,7 +3,7 @@ import {getCurrentInstance, onMounted} from 'vue';
 
 const { proxy } = getCurrentInstance()!;
 const popupOptions = {
-  id: "my-popup",
+  id: "my-popup", // css选择器
   type: "html",
   showClose: true,
   content: `
@@ -19,6 +19,7 @@ const popupOptions = {
 }
 onMounted(()=>{
   (proxy as any).$popup.open(popupOptions);
+  (proxy as any).$popup.open({type: "toast", content: "旧权益可为您抵扣：86.31元，欢迎升级~"});
 })
 </script>
 
@@ -81,7 +82,7 @@ onMounted(()=>{
       color: #FFFFFF;
     }
   }
-  .vue-popup-cancelBtn,.vue-popup-mask {
+  .vue-popup-cancelBtn {
     background: transparent !important;
   }
 }
