@@ -1,31 +1,26 @@
-(function(){"use strict";try{if(typeof document<"u"){var e=document.createElement("style");e.appendChild(document.createTextNode(".loader[data-v-5d8b5a3f]{font-size:14px;font-weight:500;color:#4d4d4d;height:42px;line-height:42px;box-sizing:border-box;padding:0 28px;background:#FFFFFF;box-shadow:0 4px 10px #0000004d;border-radius:10px}.vue-popup-mask{position:fixed;display:flex;top:50%;left:50%;transform:translate(-50%,-50%);justify-content:center;align-items:center}.vuePopupBg{top:0;right:0;bottom:0;left:0;transform:none;background:rgba(0,0,0,.5)}.vue-popup-content{position:relative}.vue-popup-closeBtn,.vue-popup-cancelBtn,.vue-popup-okBtn{border:none;padding:0;margin:0;cursor:pointer;z-index:9}")),document.head.appendChild(e)}}catch(o){console.error("vite-plugin-css-injected-by-js",o)}})();
-import { defineComponent as _, openBlock as u, createElementBlock as a, toDisplayString as h, normalizeClass as g, withModifiers as b, createElementVNode as d, Fragment as B, createVNode as C, createCommentVNode as m, createBlock as P, render as f } from "vue";
-const x = ["innerHTML"], O = /* @__PURE__ */ _({
+(function(){"use strict";try{if(typeof document<"u"){var e=document.createElement("style");e.appendChild(document.createTextNode(".vue-easy-popup-loader{font-size:14px;font-weight:500;color:#4d4d4d;height:42px;line-height:42px;box-sizing:border-box;padding:0 28px;background:#FFFFFF;box-shadow:0 4px 10px #0000004d;border-radius:10px}.vue-popup-mask{position:fixed;display:flex;top:50%;left:50%;transform:translate(-50%,-50%);justify-content:center;align-items:center}.vuePopupBg{top:0;right:0;bottom:0;left:0;transform:none;background:rgba(0,0,0,.5)}.vue-popup-content{position:relative}.vue-popup-closeBtn,.vue-popup-cancelBtn,.vue-popup-okBtn{border:none;padding:0;margin:0;cursor:pointer;z-index:9}")),document.head.appendChild(e)}}catch(o){console.error("vite-plugin-css-injected-by-js",o)}})();
+import { defineComponent as d, openBlock as s, createElementBlock as u, toDisplayString as f, normalizeClass as g, withModifiers as B, createElementVNode as p, Fragment as P, createVNode as m, createCommentVNode as _, createBlock as b, render as C } from "vue";
+const x = ["innerHTML"], F = /* @__PURE__ */ d({
   __name: "HtmlContentPlugin",
   props: {
     html: {}
   },
   setup(e) {
-    return (n, t) => (u(), a("div", { innerHTML: n.html }, null, 8, x));
+    return (n, t) => (s(), u("div", { innerHTML: n.html }, null, 8, x));
   }
-}), T = ["textContent"], F = /* @__PURE__ */ _({
+}), O = ["textContent"], T = /* @__PURE__ */ d({
   __name: "ToastContentPlugin",
   props: {
     text: {}
   },
   setup(e) {
-    return (n, t) => (u(), a("div", {
-      class: "loader",
-      textContent: h(n.text)
-    }, null, 8, T));
+    return (n, t) => (s(), u("div", {
+      class: "vue-easy-popup-loader",
+      textContent: f(n.text)
+    }, null, 8, O));
   }
 });
-const $ = (e, n) => {
-  const t = e.__vccOpts || e;
-  for (const [c, p] of n)
-    t[c] = p;
-  return t;
-}, w = /* @__PURE__ */ $(F, [["__scopeId", "data-v-5d8b5a3f"]]), M = { class: "vue-popup-content" }, H = /* @__PURE__ */ _({
+const $ = { class: "vue-popup-content" }, w = /* @__PURE__ */ d({
   __name: "Popup",
   props: {
     id: {},
@@ -39,79 +34,79 @@ const $ = (e, n) => {
   },
   emits: ["close", "cancel", "ok"],
   setup(e, { emit: n }) {
-    const t = e, c = n;
-    function p() {
-      t.type !== "toast" && (t.showClose || c("close"));
+    const t = e, a = n;
+    function y() {
+      t.type !== "toast" && (t.showClose || a("close"));
     }
     const k = () => {
-      c("close");
+      a("close");
     }, v = () => {
-      c("cancel");
-    }, y = () => {
-      c("ok");
+      a("cancel");
+    }, h = () => {
+      a("ok");
     };
-    return (s, L) => (u(), a("div", {
-      class: g(["vue-popup-mask", { vuePopupBg: s.type === "html" }]),
-      onClick: b(p, ["self"])
+    return (c, M) => (s(), u("div", {
+      class: g(["vue-popup-mask", { vuePopupBg: c.type === "html" }]),
+      onClick: B(y, ["self"])
     }, [
-      d("div", M, [
-        s.type === "html" ? (u(), a(B, { key: 0 }, [
-          C(O, { html: s.content }, null, 8, ["html"]),
-          s.showClose ? (u(), a("button", {
+      p("div", $, [
+        c.type === "html" ? (s(), u(P, { key: 0 }, [
+          m(F, { html: c.content }, null, 8, ["html"]),
+          c.showClose ? (s(), u("button", {
             key: 0,
             class: "vue-popup-closeBtn",
             onClick: k
-          })) : m("", !0),
-          d("button", {
+          })) : _("", !0),
+          p("button", {
             class: "vue-popup-cancelBtn",
             onClick: v
           }),
-          d("button", {
+          p("button", {
             class: "vue-popup-okBtn",
-            onClick: y
+            onClick: h
           })
-        ], 64)) : s.type === "toast" ? (u(), P(w, {
+        ], 64)) : c.type === "toast" ? (s(), b(T, {
           key: 1,
-          text: s.content
-        }, null, 8, ["text"])) : m("", !0)
+          text: c.content
+        }, null, 8, ["text"])) : _("", !0)
       ])
     ], 2));
   }
 });
 var r = /* @__PURE__ */ ((e) => (e.Close = "Close", e.Cancel = "Cancel", e.Ok = "Ok", e))(r || {});
-let o = null;
+let l = null;
 function i(e) {
-  o && l(), o = document.createElement("div"), e.id && (o.id = e.id), document.body.appendChild(o), e = { ...e, onClose: () => {
+  l && o(), l = document.createElement("div"), e.id && (l.id = e.id), document.body.appendChild(l), e = { ...e, onClose: () => {
     var t;
-    l(), (t = e.close) == null || t.call(e, r.Close);
+    o(), (t = e.close) == null || t.call(e, r.Close);
   }, onCancel: () => {
     var t;
-    l(), (t = e.close) == null || t.call(e, r.Cancel);
+    o(), (t = e.close) == null || t.call(e, r.Cancel);
   }, onOk: () => {
     var t;
-    l(), (t = e.close) == null || t.call(e, r.Ok);
+    o(), (t = e.close) == null || t.call(e, r.Ok);
   } };
-  const n = C(H, {
+  const n = m(w, {
     ...e
   });
-  f(n, o), e.type === "toast" && setTimeout(() => {
-    l();
+  C(n, l), e.type === "toast" && setTimeout(() => {
+    o();
   }, 1e3);
 }
-function l() {
-  o && (f(null, o), document.body.removeChild(o), o = null);
+function o() {
+  l && (C(null, l), document.body.removeChild(l), l = null);
 }
-const V = {
+const L = {
   install(e) {
-    e.config.globalProperties.$popup = { open: i, close: l }, e.directive("popup", {
+    e.config.globalProperties.$popup = { open: i, close: o }, e.directive("popup", {
       mounted(n, t) {
         n.addEventListener("click", () => i(t.value));
       }
     });
   },
   open: i,
-  close: l
+  close: o
 };
 export {
-  V as default
+  L as default
 };

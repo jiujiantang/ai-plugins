@@ -5,11 +5,11 @@ defineProps<{
 </script>
 
 <template>
-    <div class="loader" v-text="text"></div>
+    <div class="vue-easy-popup-loader" v-text="text"></div>
 </template>
 
-<style lang="less" scoped>
-.loader {
+<style lang="less">
+.vue-easy-popup-loader {
   font-size: 14px;
   font-weight: 500;
   color: #4D4D4D;
