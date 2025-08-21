@@ -31,7 +31,7 @@ export function open(options: PopupOptions) {
     if(options.type === "toast") {
         setTimeout(()=>{
             close();
-        },1000)
+        },1500)
     }
 }
 

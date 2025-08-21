@@ -91,7 +91,7 @@ function i(e) {
   });
   C(n, l), e.type === "toast" && setTimeout(() => {
     o();
-  }, 1e3);
+  }, 1500);
 }
 function o() {
   l && (C(null, l), document.body.removeChild(l), l = null);
