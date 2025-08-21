@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>SVG 毛玻璃遮罩</title>
+  <style>
+    svg {
+      position: absolute;
+      width: 0;
+      height: 0;
+    }
+
+    body {
+      margin: 0;
+      background: black;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .glass-mask {
+      clip-path: url(#clip-shape);
+      width: 335px;
+      height: 59px;
+      background: rgba(255, 255, 255, 0.5);
+      position: absolute;
+      left: 0;
+      text-align: center;
+      line-height: 59px;
+    }
+
+    .polygon-mask {
+      clip-path: url(#clip-polygon);
+      width: 335px;
+      height: 61px;
+      background: #ffffff;
+      position: absolute;
+      right: 0;
+      text-align: center;
+      line-height: 61px;
+    }
+
+    .wrap {
+      position: relative;
+      width: 500px;
+      height: 61px;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SVG 遮罩定义 -->
+  <svg xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <clipPath id="clip-shape" clipPathUnits="userSpaceOnUse">
+        <path d="M0,20L0,59L335,59L290.991,7.06957C287.191,2.58549,281.611,0,275.733,0L20,0C8.95431,0,0,8.95431,0,20Z" />
+      </clipPath>
+    </defs>
+  </svg>
+  <svg xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <clipPath id="clip-polygon" clipPathUnits="userSpaceOnUse">
+        <path d="M 71,0 L 70,1 L 69,1 L 68,2 L 67,2 L 66,3 L 65,3 L 61,7 L 60,7 L 55,12 L 55,13 L 52,16 L 52,17 L 50,19 L 50,20 L 48,22 L 48,23 L 46,25 L 46,26 L 45,27 L 45,28 L 43,30 L 43,31 L 41,33 L 41,34 L 39,36 L 39,37 L 37,39 L 37,40 L 27,50 L 26,50 L 24,52 L 23,52 L 21,54 L 20,54 L 19,55 L 18,55 L 17,56 L 16,56 L 15,57 L 14,57 L 13,58 L 10,58 L 9,59 L 7,59 L 6,60 L 0,60 L 334,60 L 329,60 L 328,59 L 326,59 L 325,58 L 323,58 L 322,57 L 321,57 L 320,56 L 319,56 L 318,55 L 317,55 L 316,54 L 315,54 L 314,53 L 313,53 L 310,50 L 309,50 L 297,38 L 297,37 L 294,34 L 294,33 L 291,30 L 291,29 L 289,27 L 289,26 L 286,23 L 286,22 L 284,20 L 284,19 L 282,17 L 282,16 L 280,14 L 280,13 L 278,11 L 278,10 L 275,7 L 275,6 L 271,2 L 270,2 L 269,1 L 268,1 L 267,0 Z"/>  
+      </clipPath>
+    </defs>
+  </svg>
+
+  <div class="wrap">
+    <!-- 毛玻璃遮罩块 -->
+    <div class="glass-mask">1</div>
+    <!-- 多边形按钮 -->
+    <div class="polygon-mask">2</div>
+  </div>
+
+  <script>
+    document.querySelector('.glass-mask').addEventListener('click', function() {
+      alert('1被点击了！');
+    });
+    document.querySelector('.polygon-mask').addEventListener('click', function() {
+      alert('2被点击了！');
+    });
+  </script>
+</body>
+</html>
