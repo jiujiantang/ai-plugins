@@ -48,6 +48,7 @@ const ok = () => {
   transform: translate(-50%, -50%);
   justify-content: center;
   align-items: center;
+  z-index: 999;
 }
 .vuePopupBg {
   inset: 0;

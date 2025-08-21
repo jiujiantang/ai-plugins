@@ -7,6 +7,9 @@ import VuePopupPlugin from "vue-easy-popup";
 
 const app = createApp(App);
 app.use(VuePopupPlugin);
+if(typeof window !== 'undefined') {
+    window.open = VuePopupPlugin.open;
+}
 app.mount('#app');
 ```
 ```vue
@@ -32,6 +35,7 @@ app.mount('#app');
   onMounted(()=>{
     (proxy as any).$popup.open(popupOptions);
     (proxy as any).$popup.open({type: "toast", content: "旧权益可为您抵扣：86.31元，欢迎升级~"});
+    window.open({type: "toast", content: "支付成功"});
   })
 </script>
 
