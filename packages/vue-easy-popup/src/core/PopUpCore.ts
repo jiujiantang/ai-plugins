@@ -2,44 +2,63 @@ import { createVNode, render } from "vue";
 import Popup from "@/components/Popup.vue";
 import {PopupOptions, ClickEvent} from "@/types";
 
-let container: HTMLElement | null = null; // 用于渲染弹窗的容器
+const containers = new Map<string, HTMLElement>();
 
-// 使用给定的选项打开弹窗
+// 打开弹窗
 export function open(options: PopupOptions) {
-    if (container) close(); // 如果已有弹窗，先关闭
+    const type = options.type || "default";
 
-    container = document.createElement("div"); // 创建新的容器
-    if(options.id) container.id = options.id;
+    // 如果同类型的已有弹窗，先关闭
+    if (containers.has(type)) close(type);
+
+    const container = document.createElement("div");
+    if (options.id) container.id = options.id;
     document.body.appendChild(container);
 
-    // 为 Popup 组件创建 Vue 虚拟节点
-    options = {...options, onClose: () => {
-        close();
-        options.close?.(ClickEvent.Close);
-    }, onCancel: () => {
-        close();
-        options.close?.(ClickEvent.Cancel);
-    }, onOk: () => {
-        close();
-        options.close?.(ClickEvent.Ok);
-    }}
+    // 保存容器
+    containers.set(type, container);
+
+    // 包装事件，确保关闭时清理
     const vnode = createVNode(Popup, {
-        ...options
+        ...options,
+        onClose: () => {
+            close(type);
+            options.close?.(ClickEvent.Close);
+        },
+        onCancel: () => {
+            close(type);
+            options.close?.(ClickEvent.Cancel);
+        },
+        onOk: () => {
+            close(type);
+            options.close?.(ClickEvent.Ok);
+        }
     });
+
     render(vnode, container);
 
-    if(options.type === "toast") {
-        setTimeout(()=>{
-            close();
-        },1500)
+    if (type === "toast") {
+        setTimeout(() => {
+            close(type);
+        }, 1500);
     }
 }
 
-// 关闭弹窗并清理容器
-export function close() {
-    if (container) {
-        render(null, container); // 卸载组件
-        document.body.removeChild(container); // 从 DOM 中移除容器
-        container = null; // 重置容器引用
+// 关闭某个类型的弹窗
+export function close(type?: string) {
+    if (type) {
+        const container = containers.get(type);
+        if (container) {
+            render(null, container);
+            document.body.removeChild(container);
+            containers.delete(type);
+        }
+    } else {
+        // 如果不传 type，关闭所有
+        containers.forEach((container) => {
+            render(null, container);
+            document.body.removeChild(container);
+        });
+        containers.clear();
     }
 }
