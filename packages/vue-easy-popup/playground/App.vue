@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {getCurrentInstance, onMounted} from 'vue';
+import {getCurrentInstance, handleError, onMounted} from 'vue';
 
 const { proxy } = getCurrentInstance()!;
 const popupOptions = {
@@ -21,10 +21,14 @@ onMounted(()=>{
   (proxy as any).$popup.open(popupOptions);
   (proxy as any).$popup.open({type: "toast", content: "旧权益可为您抵扣：86.31元，欢迎升级~"});
 })
+const handleClick = () => {
+  (proxy as any).$popup.open({type: "toast", content: "旧权益可为您抵扣：86.31元，欢迎升级~"});
+}
 </script>
 
 <template>
   <button v-popup="popupOptions">打开</button>
+  <button @click="handleClick">提示</button>
 </template>
 
 <style lang="less">
