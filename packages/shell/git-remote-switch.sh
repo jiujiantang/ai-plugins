@@ -1,5 +1,6 @@
 #!/bin/bash
 # git-remote-switch.sh
+# 用法: ./git-remote-switch.sh
 # 自动检测并切换 GitHub 远程地址 (SSH <-> HTTPS)
 
 # 获取当前仓库 remote 地址
