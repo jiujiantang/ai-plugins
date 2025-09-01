@@ -29,7 +29,7 @@ describe('CountDown.vue', () => {
         })
         await wrapper.vm.$nextTick()
 
-        expect(wrapper.text()).toContain('0,0,0,3')
+        expect(wrapper.text()).toContain('0,00,00,03')
     });
 
     it('should count down over time', async () => {
@@ -40,12 +40,12 @@ describe('CountDown.vue', () => {
         // 模拟过 1 秒
         vi.advanceTimersByTime(1000);
         await wrapper.vm.$nextTick();
-        expect(wrapper.text()).toContain('0,0,0,2'); // 还剩 2 秒
+        expect(wrapper.text()).toContain('0,00,00,02'); // 还剩 2 秒
 
         // 再过 2 秒
         vi.advanceTimersByTime(2000);
         await wrapper.vm.$nextTick();
-        expect(wrapper.text()).toContain('0,0,0,0'); // 倒计时结束
+        expect(wrapper.text()).toContain('0,00,00,00'); // 倒计时结束
     });
 
     it('should trigger onFinish when countdown ends', async () => {
@@ -80,8 +80,8 @@ describe('CountDown.vue', () => {
         await Promise.all([wrapper1.vm.$nextTick(), wrapper2.vm.$nextTick()]);
 
         // 两个组件的显示应当一致
-        expect(wrapper1.text()).toContain('0,0,0,1');
-        expect(wrapper2.text()).toContain('0,0,0,1');
+        expect(wrapper1.text()).toContain('0,00,00,01');
+        expect(wrapper2.text()).toContain('0,00,00,01');
 
         // 卸载第一个组件
         wrapper1.unmount();
@@ -91,7 +91,7 @@ describe('CountDown.vue', () => {
         await wrapper3.vm.$nextTick();
 
         // 第二个组件应当独立完成倒计时
-        expect(wrapper3.text()).toContain('0,0,0,0');
+        expect(wrapper3.text()).toContain('0,00,00,00');
     });
 
     it('should clear timer on unmount', () => {

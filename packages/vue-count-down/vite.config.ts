@@ -35,7 +35,7 @@ export default defineConfig(() => {
     },
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, 'src'),
+        // '@': path.resolve(__dirname, 'src'), 因为storybook的vite配置无法适配alias，插件统一不用alias
       },
     },
     server: {

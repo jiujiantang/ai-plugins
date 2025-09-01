@@ -1,8 +1,8 @@
 var f = Object.defineProperty;
 var m = (r, t, e) => t in r ? f(r, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : r[t] = e;
 var o = (r, t, e) => (m(r, typeof t != "symbol" ? t + "" : t, e), e);
-import { defineComponent as p, ref as u, onMounted as g, watch as w, onBeforeUnmount as v, renderSlot as S, createTextVNode as M, toDisplayString as T } from "vue";
-class y {
+import { defineComponent as p, ref as u, onMounted as g, watch as w, onBeforeUnmount as v, renderSlot as S, createTextVNode as y, toDisplayString as M } from "vue";
+class T {
   constructor() {
     o(this, "handlers", /* @__PURE__ */ new Map());
   }
@@ -39,7 +39,7 @@ class y {
 }
 class C {
   constructor(t = 1e3) {
-    o(this, "events", new y());
+    o(this, "events", new T());
     o(this, "endTime", 0);
     o(this, "timerId", null);
     o(this, "interval");
@@ -94,7 +94,7 @@ class I {
     this.cores.forEach((t) => t.stop()), this.cores.clear();
   }
 }
-const c = new I(1e3);
+const d = new I(1e3);
 function k(r) {
   const t = Math.floor(r / 1e3), e = t % 60, n = Math.floor(t / 60) % 60, i = Math.floor(t / 3600) % 24, a = Math.floor(t / 86400), h = String(e).padStart(2, "0"), l = String(n).padStart(2, "0"), s = String(i).padStart(2, "0");
   return `${String(a)},${s},${l},${h}`;
@@ -113,25 +113,25 @@ const $ = /* @__PURE__ */ p({
     const t = r, e = u(""), n = u(0);
     let i, a = null, h = null;
     function l(s) {
-      s && s >= 0 && (e.value = k(s), n.value = s);
+      typeof s < "u" && s >= 0 && (e.value = k(s), n.value = s);
     }
     return g(() => {
-      i = c.getCore(t.keyName), i.set(t.end), a = i.events.on("tick", l), h = i.events.on("end", () => {
+      i = d.getCore(t.keyName), i.set(t.end), a = i.events.on("tick", l), h = i.events.on("end", () => {
         t.onFinish(t.keyName);
       }), t.autoStart && i.start(), w(() => t.end, (s) => {
         i.set(s), i.isRunning() || i.start();
       });
     }), v(() => {
-      a == null || a(), h == null || h(), c.deleteCore(t.keyName);
-    }), (s, d) => S(s.$slots, "default", {
+      a == null || a(), h == null || h(), d.deleteCore(t.keyName);
+    }), (s, c) => S(s.$slots, "default", {
       time: e.value,
       left: n.value
     }, () => [
-      M(T(e.value), 1)
+      y(M(e.value), 1)
     ]);
   }
 });
 export {
-  c as countdownManager,
+  d as countdownManager,
   $ as default
 };

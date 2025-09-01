@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import Countdown, {countdownManager} from '@/index'
+import Countdown, {countdownManager} from '../src/index'
 
 const endA = Date.now() + 10000;
-const endC = Date.now() + 20000;
+const endB = Date.now() + 20000;
 
 function pauseA() {
   countdownManager.getCore('groupA').pause();
@@ -27,13 +27,13 @@ const handleFinish = (keyName: string) => {
         <p>组A倒计时: {{ time }}</p>
       </template>
     </Countdown>
-    <Countdown keyName="groupB" :end="endA" :onFinish="handleFinish">
+    <Countdown keyName="groupA" :end="endA" :onFinish="handleFinish">
       <template #default="{ time }">
         <p>组A另一个显示: {{ time }}</p>
       </template>
     </Countdown>
 
-    <Countdown keyName="groupC" :end="endC" :onFinish="handleFinish">
+    <Countdown keyName="groupB" :end="endB" :onFinish="handleFinish">
       <template #default="{ time }">
         <p>组B倒计时: {{ time }}</p>
       </template>

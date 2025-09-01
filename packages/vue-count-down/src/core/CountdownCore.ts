@@ -1,4 +1,4 @@
-import { EventEmitter } from '@/utils/EventEmitter';
+import { EventEmitter } from '../utils/EventEmitter';
 
 export type CountdownEvent = 'start' | 'tick' | 'end' | 'pause' | 'resume' | 'set';
 

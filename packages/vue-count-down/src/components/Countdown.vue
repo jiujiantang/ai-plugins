@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
-import { countdownManager } from '@/core/CountdownManager';
-import { formatTime } from '@/plugins/formatPlugin';
-import {CountdownCore} from "@/core/CountdownCore";
+import { countdownManager } from '../core/CountdownManager';
+import { formatTime } from '../plugins/formatPlugin';
+import {CountdownCore} from "../core/CountdownCore";
 
 const props = defineProps({
   keyName: { type: String, required: true }, // 分组 key，必填
@@ -19,7 +19,7 @@ let unsubTick: (() => void) | null = null;
 let unsubEnd: (() => void) | null = null;
 
 function updateFormatted(ms: number | undefined) {
-  if(ms && ms >= 0){
+  if(typeof ms !== 'undefined' &&  ms >= 0){
     formatted.value = formatTime(ms);
     left.value = ms;
   }
