@@ -1,6 +1,6 @@
 
 ### vue-count-down
-解决多个倒计时相互影响的问题。
+可声明多个实例的倒计时组件。
 
 ```shell
 pnpm install vue-countdown-plugin
@@ -35,7 +35,7 @@ pnpm install vue_icon_in
 ```
 
 ### win-bridge
-通用的客户端连接桥。
+通用的客户端连接桥插件。
 
 ```shell
 pnpm install win-bridge
