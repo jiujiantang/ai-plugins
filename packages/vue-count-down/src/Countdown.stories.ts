@@ -1,9 +1,10 @@
 import type { Meta, StoryFn } from '@storybook/vue3';
 import Countdown from './index';
 import type CountdownProType from './types';
+import doc from "../README.md?raw";
 
 const meta: Meta<typeof Countdown> = {
-    title: 'VUE组件/Countdown',
+    title: 'VUE组件/vue-countdown-plugin',
     component: Countdown,
     tags: ['autodocs'],
     argTypes: {
@@ -15,7 +16,7 @@ const meta: Meta<typeof Countdown> = {
     parameters: {
         docs: {
             description: {
-                component: '解决多个倒计时相互影响的问题，通过npm install vue-countdown-plugin安装，import导入。',
+                component: doc,
             },
         },
     },

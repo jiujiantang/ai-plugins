@@ -1,5 +1,5 @@
 import { App } from "vue";
-import { vEllipsisTitle } from "@/core/TitleCore";
+import { vEllipsisTitle } from "./core/TitleCore";
 
 export default {
   install(app: App) {

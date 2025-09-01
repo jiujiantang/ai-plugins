@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import CountDown from '@/components/Countdown.vue';
+import CountDown from '../src/components/Countdown.vue';
 
 /**
  * CountDown.vue 组件测试用例

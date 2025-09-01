@@ -1,5 +1,6 @@
-import { Meta } from "@storybook/blocks";
+import { Meta, Markdown } from "@storybook/blocks";
 import AddonLibrary from "./assets/addon-library.png";
+import doc from "../../README.md?raw";
 
 export const RightArrow = () => <svg 
     viewBox="0 0 14 14" 
@@ -22,7 +23,7 @@ export const RightArrow = () => <svg
 <div className='sb-addon'>
   <div className='sb-addon-text'>
     <h4>前端组件库</h4>
-    <p className="sb-section-item-paragraph">通过npm安装你需要的组件</p>
+    <p className="sb-section-item-paragraph">通过npm安装你急需的组件</p>
     <a
         href="https://storybook.js.org"
         target="_blank"
@@ -31,6 +32,11 @@ export const RightArrow = () => <svg
   <div className='sb-addon-img'>
     <img src={AddonLibrary} alt="Integrate your tools with Storybook to connect workflows." />
   </div>
+</div>
+
+<div>
+  <h1>logs</h1>
+  <Markdown>{doc}</Markdown>
 </div>
 
 <style>

@@ -4,7 +4,7 @@
   "description": "采用pnpm搭建多项目仓库，既能保持项目独立部署，又能共用基础能力",
   "main": "index.js",
   "scripts": {
-    "script-create": "node ./packages/cli/js-create-project/script/index.js",
+    "script-create": "node ./cli/js-create-project/script/index.js",
     "open-book": "pnpm --filter book storybook"
   },
   "keywords": [],

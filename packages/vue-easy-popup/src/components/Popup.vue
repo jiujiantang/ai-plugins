@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import HtmlContentPlugin from "@/plugins/HtmlContentPlugin.vue";
-import ToastContentPlugin from "@/plugins/ToastContentPlugin.vue";
-import { PopupOptions } from "@/types";
+import HtmlContentPlugin from "../plugins/HtmlContentPlugin.vue";
+import ToastContentPlugin from "../plugins/ToastContentPlugin.vue";
+import { PopupOptions } from "../types";
 
 const props = defineProps<PopupOptions>();
 
@@ -58,7 +58,14 @@ const ok = () => {
 .vue-popup-content {
   position: relative;
 }
-.vue-popup-closeBtn, .vue-popup-cancelBtn, .vue-popup-okBtn{
+.vue-popup-closeBtn{
+  //border: none;
+  padding: 5px;
+  margin: 0;
+  cursor: pointer;
+  z-index: 9;
+}
+.vue-popup-cancelBtn, .vue-popup-okBtn{
   border: none;
   padding: 0;
   margin: 0;

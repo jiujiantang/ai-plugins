@@ -1,4 +1,5 @@
-解决单个、多个倒计时声明问题
+解决多个倒计时相互影响的问题，通过npm install vue-countdown-plugin安装使用。
+
 ```vue
 <script setup lang="ts">
   import Countdown, {countdownManager} from 'vue-count-down'
@@ -34,7 +35,6 @@
         <p>组A另一个显示: {{ time }}</p>
       </template>
     </Countdown>
-
     <Countdown keyName="groupB" :end="endB" :onFinish="handleFinish">
       <template #default="{ time }">
         <p>组B倒计时: {{ time }}</p>

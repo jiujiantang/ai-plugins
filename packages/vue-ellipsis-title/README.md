@@ -1,6 +1,7 @@
-解决文本截断后，无法显示完整信息的问题
+自定义指令，当文本溢出时显示省略号，并在鼠标悬停时显示完整内容的提示框，通过npm install vue-ellipsis-title安装使用。
 
 ```ts
+// main.ts
 import { createApp } from "vue";
 import App from "./App.vue";
 import VueEllipsisTitlePlugin from "vue-ellipsis-title";
@@ -11,16 +12,10 @@ app.mount("#app");
 ```
 ```vue
 <script lang="ts" setup>
-import {ref} from "vue";
-const textRef = ref<string>("AI会员权益AI会员权益AI会员权益AI会员权益AI会员权益AI会员权益AI会员权益AI会员权益AI会员权益")
+  const text = "这是一段中等长度的文本内容，用于演示效果";
 </script>
 <template>
-  <p class="test" v-ellipsis-title="textRef">{{ textRef }}</p>
+  <p class="test" style="max-width: 200px" v-ellipsis-title="textRef">{{ text }}</p>
 </template>
-<style lang="less" scoped>
-.test {
-  max-width: 100px;
-  height: 36px;
-}
-</style>
 ```
+

@@ -1,6 +1,6 @@
 import { createVNode, render } from "vue";
-import Popup from "@/components/Popup.vue";
-import {PopupOptions, ClickEvent} from "@/types";
+import Popup from "../components/Popup.vue";
+import {PopupOptions, ClickEvent} from "../types";
 
 const containers = new Map<string, HTMLElement>();
 

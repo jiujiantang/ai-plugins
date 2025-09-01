@@ -1,13 +1,6 @@
 <script lang="ts" setup>
-import {ref} from "vue";
-const textRef = ref<string>("AI会员权益AI会员权益AI会员权益AI会员权益AI会员权益AI会员权益AI会员权益AI会员权益AI会员权益")
+const text = "这是一段中等长度的文本内容，用于演示效果";
 </script>
 <template>
-  <p class="test" v-ellipsis-title="textRef">{{ textRef }}</p>
+  <p class="test" style="max-width: 200px" v-ellipsis-title>{{ text }}</p>
 </template>
-<style lang="less" scoped>
-.test {
-  max-width: 100px;
-  height: 36px;
-}
-</style>

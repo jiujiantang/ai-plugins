@@ -1,42 +1,46 @@
-# 前端常用插件集
-```shell
-# 调试组件
-npm run dev
-# 发布组件
-npm run build
-npm publish
-```
-### vue_icon_cache
-VUE图片离线缓存插件
-```shell
-pnpm install vue_icon_cache
-npm install vue_icon_cache
-```
-
-### vue_icon_in
-VUE图片加载淡入防闪烁插件
-```shell
-pnpm install vue_icon_in
-npm install vue_icon_in
-```
-
-### win-bridge
-windows通用连接桥插件，vue版本
-```shell
-pnpm install win-bridge
-npm install win-bridge
-```
 
 ### vue-count-down
-VUE倒计时控件
+解决多个倒计时相互影响的问题。
+
 ```shell
 pnpm install vue-countdown-plugin
-npm install vue-countdown-plugin
 ```
 
 ### vue-easy-popup
-解决弹窗使用的繁琐性问题
+基于全局 open/close API 的弹窗组件。
+
 ```shell
 pnpm install vue-easy-popup
-npm install vue-easy-popup
 ```
+
+### vue-ellipsis-title
+自定义指令，当文本溢出时显示省略号，并在鼠标悬停时显示完整内容的提示框。
+
+```shell
+pnpm install vue-ellipsis-title
+```
+
+### vue_icon_cache
+ImageDB 工具，用于在 IndexedDB 中存储和检索图片。
+
+```shell
+pnpm install vue_icon_cache
+```
+
+### vue_icon_in
+背景切换组件，支持平滑过渡效果。当背景URL变化时，会显示淡入淡出的切换动画。
+
+```shell
+pnpm install vue_icon_in
+```
+
+### win-bridge
+通用的客户端连接桥。
+
+```shell
+pnpm install win-bridge
+```
+
+
+
+
