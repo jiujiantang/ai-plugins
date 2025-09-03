@@ -35,7 +35,7 @@ pnpm install vue_icon_in
 ```
 
 ### win-bridge
-通用的客户端连接桥插件。
+客户端连接桥插件。
 
 ```shell
 pnpm install win-bridge

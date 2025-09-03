@@ -1,6 +1,53 @@
-import{j as t,b as r}from"./index-KdtjS9KK.js";import{useMDXComponents as a}from"./index-DIWlasx7.js";import"./iframe-JmGhytqB.js";import"./index-DVH3pwqA.js";import"./index-DrFu-skq.js";const n=""+new URL("addon-library-BWUCAmyN.png",import.meta.url).href,s=()=>{const e={path:"path",svg:"svg",...a()};return t.jsx(e.svg,{viewBox:"0 0 14 14",width:"8px",height:"14px",style:{marginLeft:"4px",display:"inline-block",shapeRendering:"inherit",verticalAlign:"middle",fill:"currentColor","path fill":"currentColor"},children:t.jsx(e.path,{d:"m11.1 7.35-5.5 5.5a.5.5 0 0 1-.7-.7L10.04 7 4.9 1.85a.5.5 0 1 1 .7-.7l5.5 5.5c.2.2.2.5 0 .7Z"})})};function o(e){return t.jsxs(t.Fragment,{children:[t.jsx(r,{title:"组件库介绍"}),`
-`,t.jsxs("div",{className:"sb-addon",children:[t.jsxs("div",{className:"sb-addon-text",children:[t.jsx("h4",{children:"前端组件库"}),t.jsx("p",{className:"sb-section-item-paragraph",children:"通过npm安装你需要的组件"}),t.jsxs("a",{href:"https://storybook.js.org",target:"_blank",children:["learn more",t.jsx(s,{})]})]}),t.jsx("div",{className:"sb-addon-img",children:t.jsx("img",{src:n,alt:"Integrate your tools with Storybook to connect workflows."})})]}),`
-`,t.jsx("style",{children:`
+import{j as n,b as o,c as a}from"./index-D4CwRzcz.js";import{useMDXComponents as i}from"./index-CBHjznyA.js";import"./iframe-Cz5J1NMh.js";import"./index-8_2S3kac.js";import"./index-DrFu-skq.js";const s=""+new URL("addon-library-BWUCAmyN.png",import.meta.url).href,d=`\r
+### vue-count-down\r
+可声明多个实例的倒计时组件。\r
+\r
+\`\`\`shell\r
+pnpm install vue-countdown-plugin\r
+\`\`\`\r
+\r
+### vue-easy-popup\r
+基于全局 open/close API 的弹窗组件。\r
+\r
+\`\`\`shell\r
+pnpm install vue-easy-popup\r
+\`\`\`\r
+\r
+### vue-ellipsis-title\r
+自定义指令，当文本溢出时显示省略号，并在鼠标悬停时显示完整内容的提示框。\r
+\r
+\`\`\`shell\r
+pnpm install vue-ellipsis-title\r
+\`\`\`\r
+\r
+### vue_icon_cache\r
+ImageDB 工具，用于在 IndexedDB 中存储和检索图片。\r
+\r
+\`\`\`shell\r
+pnpm install vue_icon_cache\r
+\`\`\`\r
+\r
+### vue_icon_in\r
+背景切换组件，支持平滑过渡效果。当背景URL变化时，会显示淡入淡出的切换动画。\r
+\r
+\`\`\`shell\r
+pnpm install vue_icon_in\r
+\`\`\`\r
+\r
+### win-bridge\r
+客户端连接桥插件。\r
+\r
+\`\`\`shell\r
+pnpm install win-bridge\r
+\`\`\`\r
+\r
+\r
+\r
+\r
+`,l=()=>{const e={path:"path",svg:"svg",...i()};return n.jsx(e.svg,{viewBox:"0 0 14 14",width:"8px",height:"14px",style:{marginLeft:"4px",display:"inline-block",shapeRendering:"inherit",verticalAlign:"middle",fill:"currentColor","path fill":"currentColor"},children:n.jsx(e.path,{d:"m11.1 7.35-5.5 5.5a.5.5 0 0 1-.7-.7L10.04 7 4.9 1.85a.5.5 0 1 1 .7-.7l5.5 5.5c.2.2.2.5 0 .7Z"})})};function r(e){return n.jsxs(n.Fragment,{children:[n.jsx(o,{title:"组件库介绍"}),`
+`,n.jsxs("div",{className:"sb-addon",children:[n.jsxs("div",{className:"sb-addon-text",children:[n.jsx("h4",{children:"前端组件库"}),n.jsx("p",{className:"sb-section-item-paragraph",children:"通过npm安装你急需的组件"}),n.jsxs("a",{href:"https://storybook.js.org",target:"_blank",children:["learn more",n.jsx(l,{})]})]}),n.jsx("div",{className:"sb-addon-img",children:n.jsx("img",{src:s,alt:"Integrate your tools with Storybook to connect workflows."})})]}),`
+`,n.jsx("div",{children:n.jsx(a,{children:d})}),`
+`,n.jsx("style",{children:`
   .sb-container {
     margin-bottom: 48px;
   }
@@ -154,4 +201,4 @@ import{j as t,b as r}from"./index-KdtjS9KK.js";import{useMDXComponents as a}from
       margin-left: -24px;
     }
   }
-  `})]})}function g(e={}){const{wrapper:i}={...a(),...e.components};return i?t.jsx(i,{...e,children:t.jsx(o,{...e})}):o()}export{s as RightArrow,g as default};
+  `})]})}function h(e={}){const{wrapper:t}={...i(),...e.components};return t?n.jsx(t,{...e,children:n.jsx(r,{...e})}):r()}export{l as RightArrow,h as default};
