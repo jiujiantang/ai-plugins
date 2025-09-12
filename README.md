@@ -7,7 +7,6 @@ npx create-project
 npx create-project --template jiujiantang/plugins#main packages/demo2
 ```
 
-
 ### vue-count-down
 可声明多个实例的倒计时组件。
 
