@@ -15,8 +15,8 @@ importers:
         specifier: 1.12.0
         version: 1.12.0
       create-project-plugin:
-        specifier: ^2.0.0
-        version: 2.0.0
+        specifier: ^2.0.1
+        version: 2.0.1
       react:
         specifier: ^19.1.1
         version: 19.1.1
@@ -76,6 +76,50 @@ importers:
       vite-plugin-dts:
         specifier: ^3.9.1
         version: 3.9.1(@types/node@24.3.0)(rollup@4.50.0)(typescript@5.9.2)(vite@6.3.4(@types/node@24.3.0)(less@4.4.1))
+
+  packages/demo:
+    dependencies:
+      idb:
+        specifier: ^8.0.3
+        version: 8.0.3
+    devDependencies:
+      cross-env:
+        specifier: ^10.0.0
+        version: 10.0.0
+      typescript:
+        specifier: ^5.0.0
+        version: 5.9.2
+      vite:
+        specifier: ^4.0.0
+        version: 4.5.14(@types/node@24.3.0)(less@4.4.1)
+      vite-plugin-dts:
+        specifier: ^3.0.0
+        version: 3.9.1(@types/node@24.3.0)(rollup@4.50.0)(typescript@5.9.2)(vite@4.5.14(@types/node@24.3.0)(less@4.4.1))
+      vue:
+        specifier: ^3.4.0
+        version: 3.5.20(typescript@5.9.2)
+
+  packages/demo2:
+    dependencies:
+      idb:
+        specifier: ^8.0.3
+        version: 8.0.3
+    devDependencies:
+      cross-env:
+        specifier: ^10.0.0
+        version: 10.0.0
+      typescript:
+        specifier: ^5.0.0
+        version: 5.9.2
+      vite:
+        specifier: ^4.0.0
+        version: 4.5.14(@types/node@24.3.0)(less@4.4.1)
+      vite-plugin-dts:
+        specifier: ^3.0.0
+        version: 3.9.1(@types/node@24.3.0)(rollup@4.50.0)(typescript@5.9.2)(vite@4.5.14(@types/node@24.3.0)(less@4.4.1))
+      vue:
+        specifier: ^3.4.0
+        version: 3.5.20(typescript@5.9.2)
 
   packages/resource-hint-generator:
     dependencies:
@@ -2202,8 +2246,8 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     hasBin: true
 
-  create-project-plugin@2.0.0:
-    resolution: {integrity: sha512-bSXB1BWgItdT6Os7bB6u332t2+53p8ByL7m5Ttfh7ymUUbz03H7O3wlnZqN9CF7MR047DNVqKGGrYqk7hEaAjA==}
+  create-project-plugin@2.0.1:
+    resolution: {integrity: sha512-I/e/hmpcQIc/3Emk7fzclUoyzmiX3u/Bw3lekhDlHXxcd3mPChF1J9o1SQji0xj9XIzcKuQNmfKiFPtf979gKg==}
     hasBin: true
 
   cross-env@10.0.0:
@@ -6485,7 +6529,7 @@ snapshots:
       - supports-color
       - ts-node
 
-  create-project-plugin@2.0.0:
+  create-project-plugin@2.0.1:
     dependencies:
       ansi-escapes: 7.1.0
       blessed: 0.1.81

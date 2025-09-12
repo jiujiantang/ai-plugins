@@ -4,7 +4,7 @@
   "description": "采用pnpm搭建多项目仓库，既能保持项目独立部署，又能共用基础能力",
   "main": "index.js",
   "scripts": {
-    "script-create": "node ./cli/js-create-project/dist/index.js",
+    "create-project": "npx create-project",
     "open-book": "pnpm --filter book storybook"
   },
   "keywords": [],
@@ -13,7 +13,7 @@
   "dependencies": {
     "animate.css": "^4.1.1",
     "axios": "1.12.0",
-    "create-project-plugin": "^2.0.0",
+    "create-project-plugin": "^2.0.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "vue": "^3.5.13"

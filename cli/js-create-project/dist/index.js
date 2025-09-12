@@ -11,7 +11,6 @@ import minimist from 'minimist'; // 获取参数
 import chalk from 'chalk'; // 颜色
 import prompts from 'prompts'; // 交互（text、select）
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import fs from 'node:fs';
 import degit from "degit";
 const argv = minimist(process.argv.slice(2), {
@@ -36,19 +35,20 @@ function formatTargetDir(targetDir) {
 }
 // 定义可用的框架列表
 const FRAMEWORKS = [
-    // Vue 框架及其变体
     {
         name: 'vue',
-        display: 'Vue',
+        display: 'vue',
         color: chalk.yellow,
         variants: [
-            { name: 'vue-ts', display: 'TypeScript', color: chalk.yellow },
+            { name: 'act-page-vue-ts', display: 'act-page-vue-ts', color: chalk.yellow },
+            { name: 'act-popup-vue-ts', display: 'act-popup-vue-ts', color: chalk.yellow },
+            { name: 'act-plugins-vue-ts', display: 'act-plugins-vue-ts', color: chalk.yellow },
         ],
-    }
+    }, // Vue 框架及其变体
 ];
 // 将框架的变体名称扁平化为一个数组
 const TEMPLATES = FRAMEWORKS.map((f) => f.variants.map((v) => v.name)).flat();
-const defaultTargetDir = 'vue-project'; // 默认创建的项目目录名
+const defaultTargetDir = 'default-project'; // 默认创建的项目目录名
 // 初始化函数，负责项目的创建
 function init() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -85,6 +85,7 @@ function init() {
         // 本地模板模式（你的原逻辑）
         // -------------------------
         let result; // 声明存储 prompts 的结果
+        // 配置项目参数
         try {
             result = yield prompts([
                 {
@@ -125,6 +126,7 @@ function init() {
             console.log(cancelled.message);
             return; // 出错时返回
         }
+        // 克隆项目内容
         const { variant, projectName } = result;
         const currentDir = process.cwd(); // 获取当前执行目录
         const dir = path.resolve(currentDir, './packages'); // 解析 `../../../` 的路径
@@ -132,7 +134,7 @@ function init() {
         let template = variant || argTemplate; // 如果变体或模板参数可用，优先选用
         console.log(`Scaffolding project in ${root}...`); // 控制台输出项目搭建信息
         // 计算并获取模板的路径
-        const templateDir = path.resolve(fileURLToPath(import.meta.url), '../..', `template-${template}`);
+        const templateDir = path.resolve(currentDir, './templates', `${template}`);
         // 用于重命名特定文件
         const renameFiles = {
             _gitignore: '.gitignore',

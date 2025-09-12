@@ -48,21 +48,22 @@ type FrameworkVariant = {
 
 // 定义可用的框架列表
 const FRAMEWORKS: Framework[] = [
-    // Vue 框架及其变体
     {
         name: 'vue',
-        display: 'Vue',
+        display: 'vue',
         color: chalk.yellow,
         variants: [
-            { name: 'vue-ts', display: 'TypeScript', color: chalk.yellow },
+            { name: 'act-page-vue-ts', display: 'act-page-vue-ts', color: chalk.yellow },
+            { name: 'act-popup-vue-ts', display: 'act-popup-vue-ts', color: chalk.yellow },
+            { name: 'act-plugins-vue-ts', display: 'act-plugins-vue-ts', color: chalk.yellow },
         ],
-    }
+    }, // Vue 框架及其变体
 ]
 
 // 将框架的变体名称扁平化为一个数组
 const TEMPLATES = FRAMEWORKS.map((f) => f.variants.map((v) => v.name)).flat()
 
-const defaultTargetDir = 'vue-project' // 默认创建的项目目录名
+const defaultTargetDir = 'default-project' // 默认创建的项目目录名
 
 // 初始化函数，负责项目的创建
 async function init() {
@@ -103,6 +104,7 @@ async function init() {
     // -------------------------
     let result: prompts.Answers<'projectName' | 'framework' | 'variant'>// 声明存储 prompts 的结果
 
+    // 配置项目参数
     try {
         result = await prompts([
             {
@@ -143,6 +145,7 @@ async function init() {
         return // 出错时返回
     }
 
+    // 克隆项目内容
     const { variant,  projectName} = result
 
     const currentDir = process.cwd();// 获取当前执行目录
@@ -155,9 +158,9 @@ async function init() {
 
     // 计算并获取模板的路径
     const templateDir = path.resolve(
-        fileURLToPath(import.meta.url),
-        '../..',
-        `template-${template}`
+        currentDir,
+        './templates',
+        `${template}`
     )
 
     // 用于重命名特定文件
