@@ -1,0 +1,200 @@
+/*字体*/
+@font-face {
+  font-family: 'Alibaba PuHuiTi 2.0';
+  src: url('https://lykstatictest.3d66.com/liuyunku/application/packages/public/font/AlibabaPuHuiTi-2-55-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Alibaba PuHuiTi 2.0 65';
+  src: url('https://lykstatictest.3d66.com/liuyunku/application/packages/public/font/AlibabaPuHuiTi-2-65-Medium.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'DingTalk JinBuTi';
+  src: url('https://lykstatictest.3d66.com/liuyunku/application/packages/public/font/DingTalkJinBuTi.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+/*通用*/
+html,body {
+  font-family: "Alibaba PuHuiTi 2.0", "Microsoft YaHei", sans-serif;
+  background-color: transparent;
+}
+#app {
+  font-family: "Alibaba PuHuiTi 2.0", "Microsoft YaHei", sans-serif;
+  background-color: #ffffff !important;
+  border-radius: 24px;
+}
+::-webkit-scrollbar-corner {
+  background-color: #c5c5c5;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border: none;
+}
+input:focus,
+textarea:focus {
+  outline: none;
+}
+body {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;  /* 水平居中 */
+  justify-content: center;  /* 垂直居中 */
+}
+.ellipsis {
+  display: block;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 弹窗样式 */
+.rightsPop {
+  width: 100%;
+  height: calc(100% - 82px);
+  overflow: hidden scroll;
+  position: relative;
+  padding: 20px;
+}
+.rightsPopHead {
+  height: 40px;
+  line-height: 40px;
+  font-size: 16px;
+  font-weight: 500;
+  display: flex;
+  color: #4D4D4D;
+  padding: 0 20px;
+
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  border-color: #E5E5E5;
+}
+.rightsPop img {
+  width: 100%;
+  height: auto;
+}
+.rightsPop::-webkit-scrollbar {
+  /* 滚动条整体样式 */
+  width: 8px; /* 高宽分别对应横竖滚动条的尺寸 */
+  height: 1px;
+}
+.rightsPop::-webkit-scrollbar-thumb {
+  /* 滚动条里面小方块 */
+  background: #F0F0F0;
+  border-radius: 10px;
+}
+.rightsPopFooter {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: calc(100% - 40px);
+  margin-left: 20px;
+  height: 82px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /*border-top: 1px solid #E5E5E5;*/
+}
+.rightsPopBtn {
+  width: 200px;
+  height: 41px;
+  border-radius: 10px;
+  background: conic-gradient(from 180deg at 50% 50%, #41392C -217deg, #4F4C47 142deg, #41392C 143deg, #4F4C47 502deg);
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 41px;
+  color: #FFFFFF;
+  cursor: pointer;
+}
+.rightsPopClose {
+  width: 12px;
+  height: 12px;
+  background: url("../public/image/popClose.png") no-repeat;
+  position: absolute;
+  top: 14px;
+  right: 20px;
+  cursor: pointer;
+}
+.layui-layer {
+  border-radius: 18px;
+  overflow: hidden;
+}
+// 折扣弹窗
+#upgrade {
+  z-index: 9;
+  .wrap {
+    width: 420px;
+    height: 66px;
+    position: absolute;
+    left: 50%;
+    top: 100px;
+    margin-left: -210px;
+    overflow: hidden;
+    box-sizing: border-box;
+    .text {
+      width: 420px;
+      height: 66px;
+      position: absolute;
+      padding-left: 29px;
+      font-family: "Alibaba PuHuiTi 2.0 65", serif;
+      color: #4D4D4D;
+      line-height: 34px;
+    }
+    &::before {
+      content: '';
+      width: 420px;
+      height: 362px;
+      background: linear-gradient(179deg, #FFECC8 -2%, #FFFFFF 32%);
+      position: absolute;
+      top: -91px;
+    }
+    .redflag {
+      color: #FF6A00
+    }
+  }
+  .vue-popup-closeBtn {
+    width: 58px;
+    height: 58px;
+    background: url("@{image-domain}/close2.png") no-repeat;
+    position: absolute;
+    right: -40px;
+    top: -24px;
+  }
+  .vue-popup-okBtn {
+    width: 200px;
+    height: 46px;
+    border-radius: 23px;
+    background: #222222;
+    position: absolute;
+    top: 297px;
+    left: 50%;
+    transform: translateX(-50%);
+    overflow: hidden;
+    &::before {
+      content: "我知道了";
+      display: block;
+      width: 100%;
+      height: 100%;
+      line-height: 46px;
+      font-size: 16px;
+      font-weight: 500;
+      color: #FFFFFF;
+    }
+  }
+  .vue-popup-cancelBtn,.vue-popup-mask {
+    background: transparent !important;
+  }
+}

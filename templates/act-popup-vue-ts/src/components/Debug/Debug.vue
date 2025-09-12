@@ -1,0 +1,178 @@
+<template>
+  <div class="method-tester">
+    <div v-show="zoomed">
+      <button @click="toggleZoom">{{ zoomed ? 'Debugger' : 'Debugger' }}</button>
+    </div>
+    <div v-show="!zoomed">
+      <h1>LYK Method Tester</h1>
+      <input
+        v-model="methodName"
+        placeholder="如: window.external.CloseLykWindow"
+      />
+      <div>
+        <h3>Parameters</h3>
+        <div v-for="(param, index) in parameters" :key="index" class="parameter">
+          <input
+            v-model="parameters[index]"
+            placeholder="Enter parameter"
+          />
+          <button @click="removeParameter(index)" style="margin-top: 0;">Remove</button>
+        </div>
+        <button @click="addParameter">添加测试参数</button>
+      </div>
+      <button @click="testMethod">运行测试方法</button>
+      <button @click="toggleZoom">{{ zoomed ? '最大化Debugger' : '最小化Debugger' }}</button>
+      <div class="log-panel">
+        <h2>Log Panel</h2>
+        <pre>{{ log }}</pre>
+      </div>
+      <div class="logger">
+        <p>通信日志:</p>
+        <span id="debugPanel"></span>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script >
+import {nextTick, ref, onMounted} from 'vue';
+import {useWindowBridge} from "win-bridge";
+
+export default {
+  setup() {
+    const {debugPanel} = useWindowBridge()
+    const methodName = ref('');
+    const parameters = ref([]);
+    const log = ref('');
+    const zoomed = ref(true)
+
+    function testMethod() {
+      const methodParts = methodName.value.split('.');
+      let context = window;
+      try{
+        for (let part of methodParts) {
+          if (context[part] !== undefined) {
+            context = context[part];
+          } else {
+            log.value = `Method or path not found: ${part}`
+            return
+          }
+        }
+      }catch (e) {
+        console.error(e)
+      }
+      if (typeof context  === 'function') {
+        try {
+          const result = context(...parameters.value);
+          log.value = `Successfully executed: ${methodName.value}
+Return: ${result}`;
+        }catch (e){
+          log.value = e
+        }
+      } else {
+        log.value = `${methodName.value} is not a function`;
+      }
+    }
+
+    function addParameter() {
+      parameters.value.push('');
+    }
+
+    function removeParameter(index) {
+      parameters.value.splice(index, 1);
+    }
+
+    function toggleZoom() {
+      zoomed.value = !zoomed.value;
+    }
+
+    onMounted(async () => {
+      await nextTick(()=>{
+        debugPanel("#debugPanel")
+      })
+    })
+
+    return {
+      methodName,
+      parameters,
+      log,
+      zoomed,
+      testMethod,
+      addParameter,
+      removeParameter,
+      toggleZoom
+    };
+  }
+};
+</script>
+
+<style>
+.method-tester {
+  max-width: 600px;
+  max-height: 100vh;
+  overflow-y: auto;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-family: Arial, sans-serif;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  display: block;
+  padding: 10px;
+  margin-top: 5px;
+  background-color: #007BFF;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 120px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.parameter {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  justify-content: center;
+}
+
+.log-panel {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  color: black;
+}
+
+pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.logger {
+  text-align: left;
+  font-size: 12px;
+  p {
+    padding: 5px 0;
+  }
+}
+</style>

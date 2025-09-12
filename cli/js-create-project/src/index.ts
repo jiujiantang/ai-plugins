@@ -45,6 +45,11 @@ type FrameworkVariant = {
     color: Function
     customCommand?: string
 }
+type Directory = {
+    name: string
+    display: string
+    color: Function
+}
 
 // 定义可用的框架列表
 const FRAMEWORKS: Framework[] = [
@@ -58,6 +63,12 @@ const FRAMEWORKS: Framework[] = [
             { name: 'act-plugins-vue-ts', display: 'act-plugins-vue-ts', color: chalk.yellow },
         ],
     }, // Vue 框架及其变体
+]
+// 定义可用的目录列表
+const DIRECTORY: Directory[] = [
+    { name: "packages", display: 'packages', color: chalk.yellow},
+    { name: "plugins", display: 'plugins', color: chalk.yellow},
+    { name: "models", display: 'models', color: chalk.yellow},
 ]
 
 // 将框架的变体名称扁平化为一个数组
@@ -102,7 +113,7 @@ async function init() {
     // -------------------------
     // 本地模板模式（你的原逻辑）
     // -------------------------
-    let result: prompts.Answers<'projectName' | 'framework' | 'variant'>// 声明存储 prompts 的结果
+    let result: prompts.Answers<'projectName' | 'framework' | 'variant' | 'directory'>// 声明存储 prompts 的结果
 
     // 配置项目参数
     try {
@@ -135,6 +146,15 @@ async function init() {
                     value: variant.name,
                 })),
             },
+            {
+                type: 'select',// 选择项目类型
+                name: 'directory',
+                message: chalk.reset('Select a directory:'),
+                choices:  DIRECTORY.map((directory) => ({
+                    title: directory.color(directory.display),
+                    value: directory.name,
+                })),
+            },
         ], {
             onCancel: () => {
                 throw new Error(chalk.red('✖') + ' Operation cancelled') // 捕获用户取消操作并抛出错误
@@ -146,10 +166,10 @@ async function init() {
     }
 
     // 克隆项目内容
-    const { variant,  projectName} = result
+    const { variant,  directory} = result
 
     const currentDir = process.cwd();// 获取当前执行目录
-    const dir = path.resolve(currentDir, './packages');// 解析 `../../../` 的路径
+    const dir = path.resolve(currentDir, `./${directory}`);// 解析 `../../../` 的路径
     const root = path.join(dir, targetDir) // 计算项目创建的根路径
 
     let template: string = variant || argTemplate // 如果变体或模板参数可用，优先选用
