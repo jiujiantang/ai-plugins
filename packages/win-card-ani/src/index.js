@@ -5,8 +5,9 @@
       'customElements' in window &&
       'content' in document.createElement('template')
     );
+    const isUseWebComponents = false // 闪烁问题未解决
 
-  if (supportsWebComponents) {
+  if (supportsWebComponents && isUseWebComponents) {
     document.querySelector("div[data-card-group]").style.display = 'none';
     /** -------------------
      * WebComponent 版本
@@ -27,8 +28,15 @@
       }
 
       render(isActive) {
+        if (this._lastActive === isActive) return;
+        this._lastActive = isActive;
+
         const title = this.getAttribute("title") || "未命名";
         const img = isActive ? this.getAttribute("active-img") : this.getAttribute("img");
+        const imgWidth= this.getAttribute("imgWidth");
+        const imgHeight= this.getAttribute("imgHeight");
+        const actImgWidth= this.getAttribute("actImgWidth");
+        const actImgHeight= this.getAttribute("actImgHeight");
 
         this.shadowRoot.innerHTML = `
             <style>
@@ -49,8 +57,9 @@
               }
               .cardWrap {
                 position: absolute;
-                top: ${isActive ? "52px" : "64px"}; 
+                top: ${isActive ? "50%" : "64px"}; 
                 right: ${isActive ? "40px" : "128px"};
+                transform: ${isActive ? "translateY(-50%)" : ""}; 
                 display: flex;
                 flex-direction: column;
                 align-items: center;
@@ -58,8 +67,8 @@
               }
               .card img {
                 opacity: 1;
-                width: ${isActive ? "139px" : "57px"};
-                height: ${isActive ? "77px" : "32px"};
+                width: ${isActive ? actImgWidth +"px" : imgWidth +"px" };
+                height: ${isActive ? actImgHeight + "px" : imgHeight + "px"};
                 object-fit: cover;
                 transition: all 0.5s ease;
               }
@@ -68,8 +77,10 @@
                 width: 100%;
                 font-size: 14px;
                 font-weight: 400;
-                opacity: ${ isActive ? "0" : "1" };
+                display: ${ isActive ? "none" : "block" };
                 transition: opacity 0.5s ease;
+                margin-top: 10px;
+                color: #D2D3D6;
               }
               .title {
                 width: 100%;
@@ -81,6 +92,7 @@
                 font-weight: 400;
                 opacity: ${ isActive ? "1" : "0" };
                 transition: opacity 0.5s ease;
+                text-align: left;
               }
             </style>
             <div class="card">
@@ -121,12 +133,39 @@
             `;
     }
     connectedCallback() {
-      this.addEventListener("mouseenter", (e) => {
-        const card = e.composedPath().find(el => el.tagName === "MY-CARD");
-        if (card) this.activate(card);
-      }, true);
+      let ticking = false;
+      let debounceTimer = null;
+
+      const runActivate = (card, debounce = false) => {
+        const exec = () => {
+          if (!ticking) {
+            requestAnimationFrame(() => {
+              this.activate(card);
+              ticking = false;
+            });
+            ticking = true;
+          }
+        };
+
+        if (debounce) {
+          clearTimeout(debounceTimer);
+          debounceTimer = setTimeout(exec, 120); // 120ms 停留后才触发
+        } else {
+          exec();
+        }
+      };
+
+      this.addEventListener(
+        "mouseenter",
+        (e) => {
+          const card = e.composedPath().find((el) => el.tagName === "MY-CARD");
+          if (card) runActivate(card, true); // 鼠标进入用防抖
+        },
+        true
+      );
+
       this.addEventListener("mouseleave", () => {
-        this.activate(this.querySelector("my-card"));
+        runActivate(this.querySelector("my-card")); // 鼠标离开立即触发
       });
     }
     activate(card) {
@@ -148,42 +187,56 @@
      * ------------------- */
     function initFallback() {
       var groups = document.querySelectorAll("[data-card-group]");
+      let debounceTimer = null;
 
       Array.prototype.forEach.call(groups, function (group) {
         var cards = group.querySelectorAll("[data-card]");
         if (!cards.length) return;
 
-        function activate(card) {
+        function activate(card, flag) {
           Array.prototype.forEach.call(cards, function (c) {
             var img = c.querySelector("img");
             if (!img) return;
 
             // 切换状态
             if (c === card) {
-              c.classList.add("active");
+              c.classList.add(flag);
               if (img.getAttribute("data-active-img")) {
                 img.src = img.getAttribute("data-active-img");
+                img.style.width = img.getAttribute("data-actImgWidth") + "px";
+                img.style.height = img.getAttribute("data-actImgHeight") + "px";
               }
             } else {
-              c.classList.remove("active");
+              c.classList.remove(flag);
               if (img.getAttribute("data-img")) {
                 img.src = img.getAttribute("data-img");
+                img.style.width = img.getAttribute("data-imgWidth") + "px";
+                img.style.height = img.getAttribute("data-imgHeight") + "px";
               }
             }
           });
         }
 
         // 默认激活第一个
-        activate(cards[0]);
+        activate(cards[0],"active");
 
         Array.prototype.forEach.call(cards, function (card) {
           card.addEventListener("mouseenter", function () {
-            activate(card);
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(()=>{
+              Array.prototype.forEach.call(cards, function (c) {
+                c.classList.remove("active");
+              })
+              activate(card, "active2");
+            }, 120); // 120ms 停留后才触发
           });
         });
 
         group.addEventListener("mouseleave", function () {
-          activate(cards[0]);
+          Array.prototype.forEach.call(cards, function (c) {
+            c.classList.remove("active2");
+          })
+          activate(cards[0], "active");
         });
       });
     }
@@ -219,6 +272,10 @@
             flex: 440;
             background: linear-gradient(121deg, #6F63FF 0%, #425BFF 49%, #409BFB 100%);
           }
+          [data-card].active2 {
+            flex: 440;
+            background: linear-gradient(121deg, #6F63FF 0%, #425BFF 49%, #409BFB 100%);
+          }
           [data-card] .cardWrap {
             position: absolute;
             top: 64px; 
@@ -228,37 +285,89 @@
             align-items: center;
           }
           [data-card].active .cardWrap {
-            top: 52px; 
+            display: flex;
+            top: 50%;
+            transform: translateY(-50%); 
             right: 40px;
           }
+          [data-card].active2 .cardWrap {
+            display: none;
+          }
           [data-card] img {
+            display: inline-block;
             width: 57px;
             height: 32px;
             object-fit: cover;
           }
           [data-card].active img {
+            display: inline-block;
             width: 139px;
             height: 77px;
           }
+          [data-card].active2 img {
+            display: none;
+          }
           [data-card] .sub {
             font-size: 14px;
-            opacity: 1;
+            display: block;
+            margin-top: 10px;
+            color: #D2D3D6;
           }
           [data-card].active .sub {
-            opacity: 0;
+            display: none;
+          }
+          [data-card].active2 .sub {
+            display: none;
           }
           [data-card] .title {
             width: 100%;
-            position: absolute;
-            top: 78px;
-            left: 0;
+            height: 100%;
             padding-left: 41px;
+            opacity: 0;
+            text-align: left;
+            position: relative;
+            box-sizing: border-box;
+          }
+          [data-card] .title .default {
+            display: block;
+            width: 100%;
+            height: 26px;
+            line-height: 26px;
+            position: absolute;
+            top: 50%;
+            margin-top: -13px;
             font-size: 18px; 
             font-weight: 400;
-            opacity: 0;
           }
-          [data-card].active .title {
+          [data-card] .title .description {
+            display: block;
+            width: 352px;
+            height: 48px;
+            font-weight: 400;
+            font-size: 14px;
+            color: #FFFFFF;
+            line-height: 24px;
+            position: absolute;
+            top: 50%;
+            margin-top: -24px;
+          }
+          [data-card].active .title  {
             opacity: 1;
+          }
+          [data-card].active .title .default {
+            display: block;
+          }
+          [data-card].active .title .description {
+            display: none;
+          }
+          [data-card].active2 .title {
+            opacity: 1;
+          }
+          [data-card].active2 .title .default {
+            display: none;
+          }
+          [data-card].active2 .title .description {
+            display: block;
           }
         `;
       var style = document.createElement("style");

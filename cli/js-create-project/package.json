@@ -1,8 +1,11 @@
 {
-  "name": "cli-progress",
-  "version": "1.0.0",
+  "name": "create-project-plugin",
+  "version": "2.0.0",
   "main": "index.js",
   "type": "module",
+  "bin": {
+    "create-project": "bin/index.js"
+  },
   "scripts": {
     "build": "tsc",
     "dev": "tsc -w"
@@ -13,9 +16,11 @@
   "description": "",
   "devDependencies": {
     "@types/blessed": "^0.1.25",
+    "@types/degit": "^2.8.6",
     "@types/minimist": "^1.2.5",
     "@types/node": "^22.14.0",
     "@types/prompts": "^2.4.9",
+    "degit": "^2.8.4",
     "typescript": "^5.8.3"
   },
   "dependencies": {

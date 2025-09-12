@@ -1,6 +1,6 @@
 {
   "name": "win-card-ani",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Web Components Card Group with IE11 fallback",
   "type": "module",
   "main": "dist/win-card.umd.js",

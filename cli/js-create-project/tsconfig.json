@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "script",
+    "outDir": "dist",
     "types": [ "node" ],
     "target": "es2016",
     "module": "NodeNext",

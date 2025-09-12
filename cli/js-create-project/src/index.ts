@@ -4,6 +4,7 @@ import prompts from 'prompts' // 交互（text、select）
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import fs from 'node:fs';
+import degit from "degit";
 
 const argv = minimist<{
     template?: string
@@ -65,21 +66,42 @@ const defaultTargetDir = 'vue-project' // 默认创建的项目目录名
 
 // 初始化函数，负责项目的创建
 async function init() {
-    const argTargetDir = formatTargetDir(argv._[0]) // 获取并格式化目标目录
-    console.log(argv._[0])
+    const argTargetDir = formatTargetDir(argv._[0])
+    const argTemplate = argv.template || argv.t
+    if (argv.help) {
+        console.log(helpMessage)// 如果请求了帮助信息，打印帮助信息并退出
+        return
+    }
+    let targetDir = argTargetDir || defaultTargetDir
+    console.log("目标目录:",targetDir,";模板参数:",argTemplate)
 
-    const argTemplate = argv.template || argv.t // 获取模板参数
+    // 判断是不是远程仓库
+    const isRemote = argTemplate && /^[\w-]+\/[\w-]+(#.+)?$/.test(argTemplate)
+    if (isRemote) {
+        // -------------------------
+        // 远程模板模式（使用 degit）
+        // -------------------------
+        console.log(chalk.green(`> Using remote template: ${argTemplate}`))
+        const emitter = degit(argTemplate, {
+            cache: false,
+            force: true,
+            verbose: true,
+        })
+        await emitter.clone(targetDir)
 
-    const help = argv.help
-    if (help) { // 如果请求了帮助信息，打印帮助信息并退出
-        console.log(helpMessage)
+        console.log(chalk.green(`✔ Project cloned to ${targetDir}`))
+        console.log()
+        console.log(`Next steps:`)
+        console.log(`  cd ${targetDir}`)
+        console.log(`  pnpm install`)
+        console.log(`  pnpm run dev`)
         return
     }
 
-    let targetDir = argTargetDir || defaultTargetDir
-
-    // 声明存储 prompts 的结果
-    let result: prompts.Answers<'projectName' | 'framework' | 'variant'>
+    // -------------------------
+    // 本地模板模式（你的原逻辑）
+    // -------------------------
+    let result: prompts.Answers<'projectName' | 'framework' | 'variant'>// 声明存储 prompts 的结果
 
     try {
         result = await prompts([
@@ -208,13 +230,14 @@ async function init() {
         });
     });
 
-    console.log(`Done. Now run:`) // 项目创建完毕后输出
+    console.log(chalk.green(`✔ Project cloned to ${targetDir}. Now run:`))
+    console.log()
+    console.log(`Next steps:`)
     if (root !== process.cwd()) {
         console.log(`  cd ${root}`)
     }
     console.log(`  pnpm install`) // 提示用户安装依赖
     console.log(`  npm run dev`) // 提示用户运行开发服务器
-    console.log()
 }
 
 // 初始化异步函数并捕获潜在的错误
