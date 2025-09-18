@@ -6,6 +6,7 @@
   "scripts": {
     "create-project": "npx create-project",
     "create-project-local": "node cli/js-create-project/bin/index.js",
+    "create-plugin-local": "node cli/ai-agent/bin/index.js",
     "open-book": "pnpm --filter book storybook"
   },
   "keywords": [],
