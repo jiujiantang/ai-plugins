@@ -2,7 +2,7 @@
 /**
  * ai-agent.js
  * 用法：
- * set OPENAI_API_KEY=xxx node ai-agent.js generate button "{\"label\":\"提交\",\"disabled\":false}"
+ * set OPENAI_API_KEY=xxx set OPENAI_PROXY=xxx node ai-agent.js generate button "{\"label\":\"提交\",\"disabled\":false}"
  *
  * 环境变量：
  *   OPENAI_API_KEY   必填，OpenAI 的 Key
