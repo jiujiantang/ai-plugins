@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "create-project": "npx create-project",
+    "create-project-local": "node cli/js-create-project/bin/index.js",
     "open-book": "pnpm --filter book storybook"
   },
   "keywords": [],

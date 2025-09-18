@@ -1,10 +1,48 @@
+# 🔌 AI组件库
+
+✨ 一个由 AI 驱动的跨框架组件库，支持 Vue / React / 通用插件，助力高效开发。  
+通过 **AI 快速生成 + 单元测试保障 + 在线文档支撑**，让功能开发变得更简单、更稳定。
+
+---
+
+## 🚀 特性
+
+- **AI 生成**  
+  借助 AI 自动化生成组件雏形，快速满足日常业务需求。
+
+- **即插即用**  
+  所有组件均以独立功能单元封装，可单独引入或批量使用。
+
+- **稳定可靠**  
+  内置单元测试，保证组件迭代过程中的稳定性。
+
+- **跨框架支持**  
+  提供 Vue 组件、React 组件与通用逻辑封装，适配多种技术栈。
+
+- **文档齐全**  
+  在线文档与示例代码，帮助开发者快速上手。
+
+---
+
+## 📦 目录结构
+
+```plaintext
+📦 ai-components
+├── 📂 packages/
+│   ├── 📂 vue/        # Vue 组件
+│   ├── 📂 react/      # React 组件
+│   └── 📂 common/     # 通用工具/逻辑
+│
+├── 📂 docs/           # 在线文档 (vitepress / docusaurus)
+├── 📂 tests/          # 单元测试
+└── README.md
+````
+
 ### 命令
+
 ```shell
 # 安装本地模板
 npx create-project
-
-# 安装远程模板
-npx create-project --template jiujiantang/plugins#main packages/demo2
 ```
 
 ### vue-count-down

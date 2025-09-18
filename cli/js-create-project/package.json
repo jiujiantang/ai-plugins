@@ -1,6 +1,6 @@
 {
   "name": "create-project-plugin",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "main": "index.js",
   "type": "module",
   "bin": {
@@ -28,6 +28,7 @@
     "blessed": "^0.1.81",
     "blessed-contrib": "^4.11.0",
     "chalk": "^5.4.1",
+    "dotenv": "^17.2.2",
     "minimist": "^1.2.8",
     "prompts": "^2.4.2",
     "systeminformation": "^5.25.11"

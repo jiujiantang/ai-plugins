@@ -2,9 +2,9 @@ import minimist from 'minimist' // 获取参数
 import chalk from 'chalk' // 颜色
 import prompts from 'prompts' // 交互（text、select）
 import path from 'node:path'
-import { fileURLToPath } from 'node:url'
 import fs from 'node:fs';
 import degit from "degit";
+import dotenv from "dotenv";
 
 const argv = minimist<{
     template?: string
@@ -230,7 +230,7 @@ async function init() {
     // 定义 package.json 文件的路径
     const packageJsonPath = path.join(root, 'package.json');
 
-    // 读取 package.json 文件
+    // 1. 读取 package.json 文件 B!
     fs.readFile(packageJsonPath, 'utf8', (err, data) => {
         if (err) {
             console.error('Error reading package.json:', err);
@@ -244,26 +244,76 @@ async function init() {
         packageJson.name = targetDir;
 
         // 将更新后的 JSON 数据写回文件
-        fs.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2), 'utf8', (err) => {
+        fs.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2), 'utf8', async (err) => {
             if (err) {
-                console.error('Error writing package.json:', err);
+                console.error('Error writing package.json:', err)
                 return;
             }
-            console.log('package.json updated successfully!');
+
+            // 更新.env
+            await updateEnv()
+
+            console.log(chalk.green(`✔ Project cloned to ${targetDir}. Now run:`))
+            console.log()
+            console.log(`Next steps:`)
+            if (root !== process.cwd()) {
+                console.log(`  cd ${root}`)
+            }
+            console.log(`  pnpm install`) // 提示用户安装依赖
+            console.log(`  npm run dev`) // 提示用户运行开发服务器
         });
     });
+    // E!
 
-    console.log(chalk.green(`✔ Project cloned to ${targetDir}. Now run:`))
-    console.log()
-    console.log(`Next steps:`)
-    if (root !== process.cwd()) {
-        console.log(`  cd ${root}`)
+    const updateEnv = async () => {
+        // 2. 根据.env 文件，生成配置 B!
+        const envPath = path.join(templateDir, '.env');
+        if (fs.existsSync(envPath)) {
+            let envContent = fs.readFileSync(envPath, 'utf8');
+            const envConfig = dotenv.parse(envContent); // 解析 .env 内容为对象
+
+            // 找出所有布尔值的 key
+            const booleanKeys = Object.entries(envConfig)
+                .filter(([_, v]) => v === 'true' || v === 'false')
+                .map(([k]) => k);
+
+            if (booleanKeys.length > 0) {
+                // 让用户交互配置
+                const answers = await prompts(
+                    booleanKeys.map((key) => ({
+                        type: 'toggle',
+                        name: key,
+                        message: `Enable ${key}?`,
+                        initial: envConfig[key] === 'true',
+                        active: 'y',
+                        inactive: 'n',
+                    }))
+                );
+
+                // 更新 .env 内容
+                for (const key of booleanKeys) {
+                    envContent = envContent.replace(
+                        new RegExp(`^${key}=.*$`, 'm'),
+                        `${key}=${answers[key] ? 'true' : 'false'}`
+                    );
+                }
+
+                // 写回到项目根目录的 .env
+                const targetEnvPath = path.join(root, '.env');
+                fs.writeFileSync(targetEnvPath, envContent, 'utf8');
+                console.log(chalk.green('package.json, .env updated successfully!'));
+            } else {
+                // 如果没有布尔项，直接复制
+                copy(envPath, path.join(root, '.env'));
+            }
+        }
+        // E!
     }
-    console.log(`  pnpm install`) // 提示用户安装依赖
-    console.log(`  npm run dev`) // 提示用户运行开发服务器
 }
 
 // 初始化异步函数并捕获潜在的错误
 init().catch(e => {
     console.error(e);
 })
+
+

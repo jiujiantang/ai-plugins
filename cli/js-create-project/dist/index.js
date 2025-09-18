@@ -13,6 +13,7 @@ import prompts from 'prompts'; // 交互（text、select）
 import path from 'node:path';
 import fs from 'node:fs';
 import degit from "degit";
+import dotenv from "dotenv";
 const argv = minimist(process.argv.slice(2), {
     alias: { h: 'help', t: 'template' }, // 设置参数的别名
     string: ['_']
@@ -45,6 +46,12 @@ const FRAMEWORKS = [
             { name: 'act-plugins-vue-ts', display: 'act-plugins-vue-ts', color: chalk.yellow },
         ],
     }, // Vue 框架及其变体
+];
+// 定义可用的目录列表
+const DIRECTORY = [
+    { name: "packages", display: 'packages', color: chalk.yellow },
+    { name: "plugins", display: 'plugins', color: chalk.yellow },
+    { name: "models", display: 'models', color: chalk.yellow },
 ];
 // 将框架的变体名称扁平化为一个数组
 const TEMPLATES = FRAMEWORKS.map((f) => f.variants.map((v) => v.name)).flat();
@@ -116,6 +123,15 @@ function init() {
                         value: variant.name,
                     })),
                 },
+                {
+                    type: 'select', // 选择项目类型
+                    name: 'directory',
+                    message: chalk.reset('Select a directory:'),
+                    choices: DIRECTORY.map((directory) => ({
+                        title: directory.color(directory.display),
+                        value: directory.name,
+                    })),
+                },
             ], {
                 onCancel: () => {
                     throw new Error(chalk.red('✖') + ' Operation cancelled'); // 捕获用户取消操作并抛出错误
@@ -127,9 +143,9 @@ function init() {
             return; // 出错时返回
         }
         // 克隆项目内容
-        const { variant, projectName } = result;
+        const { variant, directory } = result;
         const currentDir = process.cwd(); // 获取当前执行目录
-        const dir = path.resolve(currentDir, './packages'); // 解析 `../../../` 的路径
+        const dir = path.resolve(currentDir, `./${directory}`); // 解析 `../../../` 的路径
         const root = path.join(dir, targetDir); // 计算项目创建的根路径
         let template = variant || argTemplate; // 如果变体或模板参数可用，优先选用
         console.log(`Scaffolding project in ${root}...`); // 控制台输出项目搭建信息
@@ -179,7 +195,7 @@ function init() {
         }
         // 定义 package.json 文件的路径
         const packageJsonPath = path.join(root, 'package.json');
-        // 读取 package.json 文件
+        // 1. 读取 package.json 文件 B!
         fs.readFile(packageJsonPath, 'utf8', (err, data) => {
             if (err) {
                 console.error('Error reading package.json:', err);
@@ -190,22 +206,60 @@ function init() {
             // 设置新的项目名称
             packageJson.name = targetDir;
             // 将更新后的 JSON 数据写回文件
-            fs.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2), 'utf8', (err) => {
+            fs.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2), 'utf8', (err) => __awaiter(this, void 0, void 0, function* () {
                 if (err) {
                     console.error('Error writing package.json:', err);
                     return;
                 }
-                console.log('package.json updated successfully!');
-            });
+                // 更新.env
+                yield updateEnv();
+                console.log(chalk.green(`✔ Project cloned to ${targetDir}. Now run:`));
+                console.log();
+                console.log(`Next steps:`);
+                if (root !== process.cwd()) {
+                    console.log(`  cd ${root}`);
+                }
+                console.log(`  pnpm install`); // 提示用户安装依赖
+                console.log(`  npm run dev`); // 提示用户运行开发服务器
+            }));
         });
-        console.log(chalk.green(`✔ Project cloned to ${targetDir}. Now run:`));
-        console.log();
-        console.log(`Next steps:`);
-        if (root !== process.cwd()) {
-            console.log(`  cd ${root}`);
-        }
-        console.log(`  pnpm install`); // 提示用户安装依赖
-        console.log(`  npm run dev`); // 提示用户运行开发服务器
+        // E!
+        const updateEnv = () => __awaiter(this, void 0, void 0, function* () {
+            // 2. 根据.env 文件，生成配置 B!
+            const envPath = path.join(templateDir, '.env');
+            if (fs.existsSync(envPath)) {
+                let envContent = fs.readFileSync(envPath, 'utf8');
+                const envConfig = dotenv.parse(envContent); // 解析 .env 内容为对象
+                // 找出所有布尔值的 key
+                const booleanKeys = Object.entries(envConfig)
+                    .filter(([_, v]) => v === 'true' || v === 'false')
+                    .map(([k]) => k);
+                if (booleanKeys.length > 0) {
+                    // 让用户交互配置
+                    const answers = yield prompts(booleanKeys.map((key) => ({
+                        type: 'toggle',
+                        name: key,
+                        message: `Enable ${key}?`,
+                        initial: envConfig[key] === 'true',
+                        active: 'y',
+                        inactive: 'n',
+                    })));
+                    // 更新 .env 内容
+                    for (const key of booleanKeys) {
+                        envContent = envContent.replace(new RegExp(`^${key}=.*$`, 'm'), `${key}=${answers[key] ? 'true' : 'false'}`);
+                    }
+                    // 写回到项目根目录的 .env
+                    const targetEnvPath = path.join(root, '.env');
+                    fs.writeFileSync(targetEnvPath, envContent, 'utf8');
+                    console.log(chalk.green('package.json, .env updated successfully!'));
+                }
+                else {
+                    // 如果没有布尔项，直接复制
+                    copy(envPath, path.join(root, '.env'));
+                }
+            }
+            // E!
+        });
     });
 }
 // 初始化异步函数并捕获潜在的错误
